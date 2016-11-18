@@ -1,23 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
-      <Pane prefHeight="400.0" prefWidth="400.0">
+      <Pane prefHeight="800.0" prefWidth="1200.0">
          <children>
-            <TextField fx:id="tilesetDirectory" layoutX="74.0" layoutY="14.0" prefHeight="25.0" prefWidth="229.0" promptText="Enter the directory for the Tileset file" />
-            <Label layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="58.0" text="Tileset File:" />
-            <Button fx:id="loadTilesetButton" disable="true" layoutX="309.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLoadingTiles" prefHeight="25.0" prefWidth="78.0" text="Load Tiles" />
-            <ImageView fx:id="tilesetViewer" accessibleText="Tileset" fitHeight="81.0" fitWidth="374.0" layoutX="14.0" layoutY="84.0" pickOnBounds="true" />
-            <Label layoutX="24.0" layoutY="51.0" prefHeight="17.0" prefWidth="50.0" text="Map File:" />
-            <TextField fx:id="mapDirectory" layoutX="74.0" layoutY="47.0" prefHeight="25.0" prefWidth="229.0" promptText="Enter the directory for the Map file" />
-            <Button fx:id="loadMapButton" disable="true" layoutX="309.0" layoutY="47.0" mnemonicParsing="false" onAction="#handleLoadingTiles" prefHeight="25.0" prefWidth="78.0" text="Load Map" />
+            <BorderPane prefHeight="800.0" prefWidth="1200.0">
+               <left>
+                  <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" prefHeight="108.0" prefWidth="400.0" text="Files">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="95.0" prefWidth="398.0">
+                                 <children>
+                                    <TextField fx:id="tilesetDirectory" layoutX="74.0" layoutY="14.0" prefHeight="25.0" prefWidth="208.0" promptText="Enter the directory for the Tileset file" />
+                                    <Label layoutX="6.0" layoutY="18.0" prefHeight="17.0" prefWidth="58.0" text="Tileset File:" />
+                                    <Button fx:id="loadTilesetButton" disable="true" layoutX="288.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLoadingTiles" prefHeight="25.0" prefWidth="78.0" text="Load Tiles" />
+                                    <Label layoutX="16.0" layoutY="51.0" prefHeight="17.0" prefWidth="50.0" text="Map File:" />
+                                    <TextField fx:id="mapDirectory" layoutX="74.0" layoutY="47.0" prefHeight="25.0" prefWidth="209.0" promptText="Enter the directory for the Map file" />
+                                    <Button fx:id="loadMapButton" disable="true" layoutX="288.0" layoutY="47.0" mnemonicParsing="false" onAction="#handleLoadingTiles" prefHeight="25.0" prefWidth="78.0" text="Load Map" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" prefHeight="121.0" prefWidth="400.0" text="Tileset">
+                           <content>
+                              <ScrollPane hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0">
+                                 <content>
+                                    <HBox fx:id="tilesetLibrary" alignment="CENTER" prefHeight="81.0" prefWidth="398.0" spacing="5.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </HBox>
+                                 </content>
+                              </ScrollPane>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </FlowPane>
+               </left>
+               <center>
+                  <TitledPane animated="false" collapsible="false" prefHeight="804.0" prefWidth="800.0" text="Map Editor" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
          </children>
       </Pane>
    </children>
