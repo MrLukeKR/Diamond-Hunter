@@ -25,6 +25,7 @@ public class MainController implements Initializable {
 	@FXML private MenuItem loadMapButton;
 	@FXML private MenuItem saveTilesetButton;
 	@FXML private MenuItem saveMapButton;
+	@FXML private MenuItem closeButton;
 	@FXML private HBox normalTiles;
 	@FXML private HBox blockedTiles;
 	@FXML private GridPane mapGrid;
@@ -64,22 +65,17 @@ public class MainController implements Initializable {
 	}
 	
 	private TileButton createTileButton(int type, int index){
-		Image icon;
-		
-		icon = SwingFXUtils.toFXImage(mapEditorModel.getTiles()[type][index].image, null);
-		
+		Image icon = SwingFXUtils.toFXImage(mapEditorModel.getTiles()[type][index].image, null);
 		TileButton newButton = new TileButton(icon);
-		
-		return newButton;
-		
+		return newButton;		
 	}
 	
 	private TileButton createTileButton(int mapValue){
 		int tilesPerRow = mapEditorModel.numTilesAcross;
 
-		if(mapValue >= tilesPerRow){
+		if(mapValue >= tilesPerRow)
 			return createTileButton(1, mapValue - tilesPerRow);
-		}else
+		else
 			return createTileButton(0, mapValue);
 	}
 	
