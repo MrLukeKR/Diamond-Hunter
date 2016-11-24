@@ -19,6 +19,8 @@ public class Main extends Application {
 			root.setCenter(content);
 			
 			primaryStage.setScene(scene);
+			//primaryStage.setMaximized(true);
+			MainController.setStage(primaryStage);
 			primaryStage.setTitle("Diamond Hunter Map Editor");
 			primaryStage.show();
 		} catch(Exception e) {
