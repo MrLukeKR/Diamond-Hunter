@@ -56,7 +56,7 @@ public class MainController implements Initializable {
 				blockedTiles.getChildren().add(createTileButton(1, i));
 			}
 			
-		
+			loadMapButton.setDisable(false);
 		} else {
 			System.out.println("Invalid directory entered for Tileset Directory");
 		//TODO: JavaFX warning notification
