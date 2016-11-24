@@ -12,14 +12,14 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,1200,800);
+			Scene scene = new Scene(root,1050,790);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			Parent content = FXMLLoader.load(getClass().getClassLoader().getResource("FXMLLayout.fxml"));
 		
 			root.setCenter(content);
 			
 			primaryStage.setScene(scene);
-			//primaryStage.setMaximized(true);
+			primaryStage.setResizable(false);
 			MainController.setStage(primaryStage);
 			primaryStage.setTitle("Diamond Hunter Map Editor");
 			primaryStage.show();
