@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+   <children>
+      <Pane prefHeight="800.0" prefWidth="1200.0">
+         <children>
+            <BorderPane prefHeight="800.0" prefWidth="1200.0">
+               <left>
+                  <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" prefHeight="264.0" prefWidth="400.0" text="Tileset">
+                           <content>
+                              <ImageView fx:id="tilesetImageViewer" fitHeight="250.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" />
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" prefHeight="120.0" prefWidth="400.0" text="Tiles">
+                           <content>
+                              <ScrollPane hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0">
+                                 <content>
+                                    <VBox prefHeight="80.0" prefWidth="400.0">
+                                       <children>
+                                          <HBox fx:id="normalTiles" prefHeight="100.0" prefWidth="200.0" />
+                                          <HBox fx:id="blockedTiles" prefHeight="100.0" prefWidth="200.0" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </FlowPane>
+               </left>
+               <center>
+                  <TitledPane animated="false" collapsible="false" prefHeight="804.0" prefWidth="800.0" text="Map Editor" BorderPane.alignment="CENTER">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true" prefHeight="672.0" prefWidth="712.0">
+                                <rowConstraints>
+                                  <RowConstraints fillHeight="false" valignment="CENTER" vgrow="NEVER" />
+                                </rowConstraints>
+                                 <columnConstraints>
+                                    <ColumnConstraints />
+                                 </columnConstraints>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </content></TitledPane>
+               </center>
+               <top>
+                  <MenuBar BorderPane.alignment="CENTER">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                              <MenuItem fx:id="openTilesetButton" mnemonicParsing="false" onAction="#handleLoadingTileset" text="Open Tileset" />
+                              <MenuItem fx:id="openMapButton" mnemonicParsing="false" onAction="#handleLoadingMap" text="Open Map" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="saveTilesetButton" mnemonicParsing="false" text="Save Tileset" />
+                              <MenuItem fx:id="saveMapButton" mnemonicParsing="false" text="Save Map" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                          <MenuItem mnemonicParsing="false" text="Close" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </top>
+            </BorderPane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
