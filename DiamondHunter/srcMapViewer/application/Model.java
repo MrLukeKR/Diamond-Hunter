@@ -18,6 +18,9 @@ public class Model {
 	private int numRows;
 	private int numCols;
 	
+	private int currentX;
+	private int currentY;
+	
 	// tileset
 	private BufferedImage tileset;
 	public int numTilesAcross;
@@ -56,6 +59,11 @@ public void loadTiles(String s) {
 		}
 		
 	}
+
+public void updateCoordinates(int x, int y){
+	currentX = x;
+	currentY = y;
+}
 	
 public void loadMap(String s) {
 	
@@ -116,5 +124,21 @@ public int[][] getMap() {
 
 public void setMap(int[][] map) {
 	this.map = map;
+}
+
+public int getCurrentX() {
+	return currentX;
+}
+
+public void setCurrentX(int currentX) {
+	this.currentX = currentX;
+}
+
+public int getCurrentY() {
+	return currentY;
+}
+
+public void setCurrentY(int currentY) {
+	this.currentY = currentY;
 }
 }
