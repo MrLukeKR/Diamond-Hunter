@@ -14,6 +14,7 @@ public class TileButton extends ImageView{
 	private MainController controller;
 	private Model model;
 	private int xLoc, yLoc;
+	private boolean isBlocked;
 	
 	public TileButton(Image icon) {
 		setImage(icon);
@@ -29,6 +30,7 @@ public class TileButton extends ImageView{
 				setEffect(selected);
 				model.updateCoordinates(xLoc, yLoc);
 				controller.updateCoordinates();
+				controller.updateIsBlocked(isBlocked);
 			}
 			
 		});
@@ -48,6 +50,10 @@ public class TileButton extends ImageView{
 	
 	public void setModel (Model model){
 		this.model = model;
+	}
+	
+	public void setIsBlocked(boolean blocked){
+		isBlocked = blocked;
 	}
 	
 	public void setCoordinates(int x, int y){
