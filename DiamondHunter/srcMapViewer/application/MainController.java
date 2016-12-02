@@ -9,6 +9,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +31,7 @@ public class MainController implements Initializable {
 	@FXML private HBox blockedTiles;
 	@FXML private GridPane mapGrid;
 	@FXML private ImageView tilesetImageViewer;
+	@FXML private Label coordLabel;
 	private FileChooser fileChooser = new FileChooser();
 	
 	private Model mapEditorModel = new Model();
@@ -93,6 +95,10 @@ public class MainController implements Initializable {
 			//TODO: JavaFX warning notification
 		}
 	}
+
+	void updateCoordinates(){
+		coordLabel.setText("X: " + mapEditorModel.getCurrentX() + " Y: " + mapEditorModel.getCurrentY());
+	}
 	
 	private boolean validateDirectory(String directory){
 		return true; //TODO: Fix the regex pattern
@@ -102,7 +108,12 @@ public class MainController implements Initializable {
 	private void createMapGrid(int cols, int rows, int[][] map){
 		for(int r = 0; r < rows; r++)
 			for(int c = 0; c < cols; c++){		
-				mapGrid.add(createTileButton(mapEditorModel.getMap()[r][c]), c, r);
+				TileButton tempButton = createTileButton(mapEditorModel.getMap()[r][c]);
+				tempButton.setController(this);
+				tempButton.setModel(mapEditorModel);
+				tempButton.setCoordinates(r, c);
+				mapGrid.add(tempButton, c, r);
+				
 		}
 		
 	}
