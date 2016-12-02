@@ -116,7 +116,7 @@ public class MainController implements Initializable {
 				TileButton tempButton = createTileButton(mapEditorModel.getMap()[r][c]);
 				tempButton.setController(this);
 				tempButton.setModel(mapEditorModel);
-				tempButton.setCoordinates(r, c);
+				tempButton.setCoordinates(c, r);
 				mapGrid.add(tempButton, c, r);
 				
 		}
