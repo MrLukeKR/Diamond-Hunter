@@ -32,6 +32,7 @@ public class MainController implements Initializable {
 	@FXML private GridPane mapGrid;
 	@FXML private ImageView tilesetImageViewer;
 	@FXML private Label coordLabel;
+	@FXML private Label blockedLabel;
 	private FileChooser fileChooser = new FileChooser();
 	
 	private Model mapEditorModel = new Model();
@@ -69,6 +70,10 @@ public class MainController implements Initializable {
 	private TileButton createTileButton(int type, int index){
 		Image icon = SwingFXUtils.toFXImage(mapEditorModel.getTiles()[type][index].image, null);
 		TileButton newButton = new TileButton(icon);
+		if(type == 1)
+			newButton.setIsBlocked(true);
+		else
+			newButton.setIsBlocked(false);
 		return newButton;		
 	}
 	
@@ -123,5 +128,12 @@ public class MainController implements Initializable {
 		assert loadTilesetButton != null : "Load Tileset button was not injected!";
 		assert loadMapButton != null : "Load Map button was not injected!";
 		assert mapGrid != null: "Map Grid was not injected!";
+	}
+
+	public void updateIsBlocked(boolean isBlocked) {
+		if (isBlocked)
+		blockedLabel.setText("Blocked");
+		else
+			blockedLabel.setText("Unblocked");
 	}
 }
