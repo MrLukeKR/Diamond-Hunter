@@ -9,6 +9,9 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 public class Model {
 
 	
@@ -180,9 +183,13 @@ public void setItem(int itemID) {
 }
 
 public boolean placeItem(int xLoc, int yLoc, boolean blocked) {
-	if(blocked){
-		 //TODO: Warning message
-	}
+	if(blocked && item != -1){
+		Alert warning = new Alert(AlertType.WARNING);
+		warning.setTitle("Blocked Tile");
+		warning.setHeaderText("You're about to add an item to a blocked tile!");
+		warning.setContentText("Please make sure the item can still be obtained somehow.\n\n(PRO TIP: You can get to blocked areas by cutting trees down with an Axe or crossing water with a Boat)");
+		warning.showAndWait();
+		}
 	
 	if(item == 0){
 		boatX = xLoc;
