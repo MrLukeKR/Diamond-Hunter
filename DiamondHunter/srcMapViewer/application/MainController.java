@@ -128,11 +128,17 @@ public class MainController implements Initializable {
 	}
 	
 	@FXML private void axeToggled(ActionEvent event){
-		mapEditorModel.setItem(1);
+		if(axeButton.isSelected()){
+			mapEditorModel.setItem(Model.AXE);
+		}else
+			mapEditorModel.setItem(-1);
 	}
-	
+
 	@FXML private void boatToggled(ActionEvent event){
-		mapEditorModel.setItem(0);
+		if(boatButton.isSelected())
+			mapEditorModel.setItem(Model.BOAT);
+		else
+			mapEditorModel.setItem(-1);
 	}
 	
 	@FXML private void exitApplication(ActionEvent event){
