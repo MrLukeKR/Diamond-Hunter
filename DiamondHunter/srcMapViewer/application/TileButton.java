@@ -35,6 +35,10 @@ public class TileButton extends ImageView{
 					model.updateCoordinates(xLoc, yLoc);
 					controller.updateCoordinates();
 					controller.updateIsBlocked(isBlocked);
+					int tempItem = model.getItem(xLoc, yLoc);
+					
+					if(tempItem != -1)
+						controller.updateHasItem(tempItem);
 				}
 			}
 			
