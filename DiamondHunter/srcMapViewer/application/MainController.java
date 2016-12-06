@@ -33,6 +33,11 @@ public class MainController implements Initializable {
 	@FXML private Label blockedLabel;
 	private FileChooser fileChooser = new FileChooser();
 	
+
+	ImageView axeIcon = new ImageView();
+	ImageView boatIcon = new ImageView();
+	
+
 	public static void setModel(Model model){
 		mapEditorModel = model;
 	}
@@ -122,6 +127,14 @@ public class MainController implements Initializable {
 		
 	}
 	
+	@FXML private void axeToggled(ActionEvent event){
+		mapEditorModel.setItem(1);
+	}
+	
+	@FXML private void boatToggled(ActionEvent event){
+		mapEditorModel.setItem(0);
+	}
+	
 	@FXML private void exitApplication(ActionEvent event){
 		System.exit(0);
 	}
@@ -133,9 +146,6 @@ public class MainController implements Initializable {
 		assert mapGrid != null: "Map Grid was not injected!";
 		assert boatButton != null: "Boat Button was not injected!";
 		loadDefaultMap();
-
-		ImageView axeIcon = new ImageView();
-		ImageView boatIcon = new ImageView();
 
 		axeIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][1], null));
 		boatIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][0], null));
@@ -149,5 +159,22 @@ public class MainController implements Initializable {
 		blockedLabel.setText("Blocked");
 		else
 			blockedLabel.setText("Unblocked");
+	}
+
+	public void displayItem(int xLoc, int yLoc) {
+		
+		if(mapEditorModel.getCurrentItem() == 1){
+			axeButton.setGraphic(null);
+			if(mapEditorModel.itemPlaced(1))
+				mapGrid.getChildren().removeAll(axeIcon);
+			mapGrid.add(axeIcon, xLoc, yLoc);
+		} else if(mapEditorModel.getCurrentItem() == 0){
+			boatButton.setGraphic(null);
+			if(mapEditorModel.itemPlaced(0))
+				mapGrid.getChildren().removeAll(boatIcon);
+			mapGrid.add(boatIcon, xLoc, yLoc);
+		}
+		
+		
 	}
 }
