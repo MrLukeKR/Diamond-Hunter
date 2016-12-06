@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -24,6 +26,8 @@ public class MainController implements Initializable {
 	@FXML private MenuItem saveTilesetButton;
 	@FXML private MenuItem saveMapButton;
 	@FXML private MenuItem closeButton;
+	@FXML private ToggleButton axeButton;
+	@FXML private ToggleButton boatButton;
 	@FXML private GridPane mapGrid;
 	@FXML private Label coordLabel;
 	@FXML private Label blockedLabel;
@@ -127,8 +131,17 @@ public class MainController implements Initializable {
 		assert loadTilesetButton != null : "Load Tileset button was not injected!";
 		assert loadMapButton != null : "Load Map button was not injected!";
 		assert mapGrid != null: "Map Grid was not injected!";
-		
+		assert boatButton != null: "Boat Button was not injected!";
 		loadDefaultMap();
+
+		ImageView axeIcon = new ImageView();
+		ImageView boatIcon = new ImageView();
+
+		axeIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][1], null));
+		boatIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][0], null));
+		
+		axeButton.setGraphic(axeIcon);
+		boatButton.setGraphic(boatIcon);
 	}
 
 	public void updateIsBlocked(boolean isBlocked) {
