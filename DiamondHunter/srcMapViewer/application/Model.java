@@ -25,6 +25,8 @@ public class Model {
 	private BufferedImage tileset;
 	public int numTilesAcross;
 	private Tile[][] tiles;
+	public static BufferedImage[][] ITEMS = load("Resources/Sprites/items.gif", 16, 16);
+
 
 public void loadTiles(String s) {
 		
@@ -96,6 +98,28 @@ public void loadMap(String s) {
 		e.printStackTrace();
 	}
 	
+}
+
+public static BufferedImage[][] load(String s, int w, int h) {
+	BufferedImage[][] ret;
+	try {
+		BufferedImage spritesheet = ImageIO.read(new File(s));
+		int width = spritesheet.getWidth() / w;
+		int height = spritesheet.getHeight() / h;
+		ret = new BufferedImage[height][width];
+		for(int i = 0; i < height; i++) {
+			for(int j = 0; j < width; j++) {
+				ret[i][j] = spritesheet.getSubimage(j * w, i * h, w, h);
+			}
+		}
+		return ret;
+	}
+	catch(Exception e) {
+		e.printStackTrace();
+		System.out.println("Error loading graphics.");
+		System.exit(0);
+	}
+	return null;
 }
 
 public int getNumRows() {
