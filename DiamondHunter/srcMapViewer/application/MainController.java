@@ -166,6 +166,15 @@ public class MainController implements Initializable {
 		else
 			blockedLabel.setText("Unblocked");
 	}
+	
+	public void updateHasItem(int item){
+		if(item == Model.AXE)
+			blockedLabel.setText(blockedLabel.getText() + " - has Axe");
+		else if(item == Model.BOAT)
+			blockedLabel.setText(blockedLabel.getText() + " - has Boat");
+		else if(item == 2)
+			blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat");
+	}
 
 	public void displayItem(int xLoc, int yLoc) {
 		
