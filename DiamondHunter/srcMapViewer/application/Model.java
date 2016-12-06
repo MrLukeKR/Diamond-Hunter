@@ -217,4 +217,14 @@ public boolean itemPlaced(int i) {
 	
 		return true;
 }
+
+public int getItem(int xLoc, int yLoc) {
+	if((xLoc == axeX && yLoc == axeY) && (xLoc == boatX && yLoc == boatY))
+		return 2;
+	else if(xLoc == axeX && yLoc == axeY)
+		return AXE;
+	else if(xLoc == boatX && yLoc == boatY)
+		return BOAT;
+	return -1;
+}
 }
