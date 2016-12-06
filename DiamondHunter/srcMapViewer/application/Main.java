@@ -18,7 +18,7 @@ public class Main extends Application {
 			MainController.setStage(primaryStage);
 			
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,650,800);
+			Scene scene = new Scene(root,660,835);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			Parent content = FXMLLoader.load(getClass().getClassLoader().getResource("FXMLLayout.fxml"));
 			root.setCenter(content);
