@@ -153,8 +153,8 @@ public class MainController implements Initializable {
 		assert boatButton != null: "Boat Button was not injected!";
 		loadDefaultMap();
 
-		axeIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][1], null));
-		boatIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][0], null));
+		axeIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][Model.AXE], null));
+		boatIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][Model.BOAT], null));
 		
 		axeButton.setGraphic(axeIcon);
 		boatButton.setGraphic(boatIcon);
