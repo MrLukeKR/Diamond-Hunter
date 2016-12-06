@@ -2,14 +2,15 @@ package application;
 
 import javafx.event.EventHandler;
 import javafx.scene.effect.Effect;
-import javafx.scene.effect.Glow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class TileButton extends ImageView{
 
-	static final Effect selected = new Glow(10);
+	private Effect selected;
 	
 	private MainController controller;
 	private Model model;
@@ -19,6 +20,7 @@ public class TileButton extends ImageView{
 	public TileButton(Image icon) {
 		setImage(icon);
 		setHandlers();
+		
 		xLoc = yLoc = -1;
 	}
 	
@@ -57,6 +59,10 @@ public class TileButton extends ImageView{
 	
 	public void setIsBlocked(boolean blocked){
 		isBlocked = blocked;
+		if(blocked)
+			selected = new InnerShadow(5, Color.RED);
+		else
+			selected = new InnerShadow(5, Color.BLACK);
 	}
 	
 	public void setCoordinates(int x, int y){
