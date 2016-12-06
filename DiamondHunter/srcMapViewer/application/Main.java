@@ -8,19 +8,25 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
+
+	private Model model = new Model();
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			MainController.setModel(model);
+			MainController.setStage(primaryStage);
+			
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,1050,790);
+			Scene scene = new Scene(root,650,800);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			Parent content = FXMLLoader.load(getClass().getClassLoader().getResource("FXMLLayout.fxml"));
-		
 			root.setCenter(content);
 			
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
-			MainController.setStage(primaryStage);
+
+
 			primaryStage.setTitle("Diamond Hunter Map Editor");
 			primaryStage.show();
 		} catch(Exception e) {
