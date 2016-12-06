@@ -25,8 +25,7 @@ public class Model {
 	private BufferedImage tileset;
 	public int numTilesAcross;
 	private Tile[][] tiles;
-	
-	
+
 public void loadTiles(String s) {
 		
 		try {
@@ -63,6 +62,11 @@ public void loadTiles(String s) {
 public void updateCoordinates(int x, int y){
 	currentX = x;
 	currentY = y;
+}
+
+public void loadDefaultMap(){
+	loadTiles("Resources/Tilesets/testtileset.gif");
+	loadMap("Resources/Maps/testmap.map");
 }
 	
 public void loadMap(String s) {
