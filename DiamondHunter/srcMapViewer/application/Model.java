@@ -26,6 +26,11 @@ public class Model {
 	public int numTilesAcross;
 	private Tile[][] tiles;
 	public static BufferedImage[][] ITEMS = load("Resources/Sprites/items.gif", 16, 16);
+	
+	private int axeX =-1, axeY=-1, boatX=-1, boatY=-1;
+	private int item =-1;
+	
+	public static int AXE = 1, BOAT = 0;
 
 
 public void loadTiles(String s) {
@@ -168,5 +173,41 @@ public int getCurrentY() {
 
 public void setCurrentY(int currentY) {
 	this.currentY = currentY;
+}
+
+public void setItem(int itemID) {
+	item = itemID;
+}
+
+public boolean placeItem(int xLoc, int yLoc, boolean blocked) {
+	if(blocked){
+		 //TODO: Warning message
+	}
+	
+	if(item == 0){
+		boatX = xLoc;
+		boatY = yLoc;
+	}else if (item == 1){
+		axeX = xLoc;
+		axeY = yLoc;
+	}else
+		return false;
+	
+	return true;
+}
+
+public int getCurrentItem() {
+	return item;
+}
+
+public boolean itemPlaced(int i) {
+	if(i == AXE){
+		if(axeX == -1 && axeY == -1)
+			return false;
+	}else if (i == BOAT)
+		if(boatX == -1 && boatY == -1)
+			return false;
+	
+		return true;
 }
 }
