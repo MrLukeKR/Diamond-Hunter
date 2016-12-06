@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 public class TileButton extends ImageView{
 
 	private Effect selected;
-	
+
 	private MainController controller;
 	private Model model;
 	private int xLoc, yLoc;
@@ -40,11 +40,21 @@ public class TileButton extends ImageView{
 			
 		});
 		
+		setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				if(model.placeItem(xLoc, yLoc, isBlocked))
+					controller.displayItem(xLoc, yLoc);
+			}
+			
+		});
+		
 		setOnMouseExited(new EventHandler<MouseEvent>(){
 
 			@Override
-			public void handle(MouseEvent event) {	
-				setEffect(null);  
+			public void handle(MouseEvent event) {
+					setEffect(null);  
 				}
 			});
 	}
