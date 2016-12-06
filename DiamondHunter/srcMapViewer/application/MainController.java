@@ -1,10 +1,7 @@
 package application;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,9 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -22,20 +17,21 @@ public class MainController implements Initializable {
 
 	
 	private static Stage stage;
+	private static Model mapEditorModel;
+	
 	@FXML private MenuItem loadTilesetButton;
 	@FXML private MenuItem loadMapButton;
 	@FXML private MenuItem saveTilesetButton;
 	@FXML private MenuItem saveMapButton;
 	@FXML private MenuItem closeButton;
-	@FXML private HBox normalTiles;
-	@FXML private HBox blockedTiles;
 	@FXML private GridPane mapGrid;
-	@FXML private ImageView tilesetImageViewer;
 	@FXML private Label coordLabel;
 	@FXML private Label blockedLabel;
 	private FileChooser fileChooser = new FileChooser();
 	
-	private Model mapEditorModel = new Model();
+	public static void setModel(Model model){
+		mapEditorModel = model;
+	}
 	
 	public static void setStage(Stage newStage){
 		stage = newStage;
@@ -48,18 +44,8 @@ public class MainController implements Initializable {
 		String directory = fileChooser.showOpenDialog(stage).getAbsolutePath(); //TODO: Add dialog escape handling
 
 		if(validateDirectory(directory)){
-			File imageFile = new File(directory);
-			Image tilesetImage = new Image(imageFile.toURI().toString());
-
-			tilesetImageViewer.setImage(tilesetImage);
-		
 			mapEditorModel.loadTiles(directory);
-
-			for(int i = 0; i < mapEditorModel.numTilesAcross; i++){
-				normalTiles.getChildren().add(createTileButton(0, i));				
-				blockedTiles.getChildren().add(createTileButton(1, i));
-			}
-			
+		
 			loadMapButton.setDisable(false);
 		} else {
 			System.out.println("Invalid directory entered for Tileset Directory");
@@ -93,7 +79,7 @@ public class MainController implements Initializable {
 
 		if(validateDirectory(directory)){
 			mapEditorModel.loadMap(directory);	
-			createMapGrid(mapEditorModel.getNumCols(),mapEditorModel.getNumRows(),mapEditorModel.getMap());
+			createMapGrid();
 
 		} else {
 			System.out.println("Invalid directory entered for Map Directory");
@@ -110,10 +96,19 @@ public class MainController implements Initializable {
 		//return Pattern.matches("^(.+)/([^/]+)$", directory);
 	}
 	
-	private void createMapGrid(int cols, int rows, int[][] map){
+	public void loadDefaultMap(){
+		mapEditorModel.loadDefaultMap();
+		createMapGrid();
+	}
+	
+	private void createMapGrid(){
+		int cols = mapEditorModel.getNumCols();
+		int rows = mapEditorModel.getNumRows();
+		int [][] map = mapEditorModel.getMap();
+		
 		for(int r = 0; r < rows; r++)
 			for(int c = 0; c < cols; c++){		
-				TileButton tempButton = createTileButton(mapEditorModel.getMap()[r][c]);
+				TileButton tempButton = createTileButton(map[r][c]);
 				tempButton.setController(this);
 				tempButton.setModel(mapEditorModel);
 				tempButton.setCoordinates(c, r);
@@ -122,12 +117,18 @@ public class MainController implements Initializable {
 		}
 		
 	}
+	
+	@FXML private void exitApplication(ActionEvent event){
+		System.exit(0);
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		assert loadTilesetButton != null : "Load Tileset button was not injected!";
 		assert loadMapButton != null : "Load Map button was not injected!";
 		assert mapGrid != null: "Map Grid was not injected!";
+		
+		loadDefaultMap();
 	}
 
 	public void updateIsBlocked(boolean isBlocked) {
