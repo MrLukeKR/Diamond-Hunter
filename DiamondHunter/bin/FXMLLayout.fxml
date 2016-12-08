@@ -20,7 +20,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane prefHeight="805.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
       <BorderPane prefHeight="800.0" prefWidth="650.0">
@@ -32,8 +31,7 @@
                         <MenuItem fx:id="loadTilesetButton" mnemonicParsing="false" onAction="#handleLoadingTileset" text="Open Tileset" />
                         <MenuItem fx:id="loadMapButton" disable="true" mnemonicParsing="false" onAction="#handleLoadingMap" text="Open Map" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="saveTilesetButton" disable="true" mnemonicParsing="false" text="Save Tileset" />
-                        <MenuItem fx:id="saveMapButton" disable="true" mnemonicParsing="false" text="Save Map" />
+                        <MenuItem fx:id="saveMapButton" mnemonicParsing="false" onAction="#saveItemMap" text="Save Item Map" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#exitApplication" text="Close" />
                      </items>
