@@ -7,6 +7,9 @@ package com.neet.DiamondHunter.GameState;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.neet.DiamondHunter.Entity.Diamond;
@@ -171,20 +174,47 @@ public class PlayState extends GameState {
 	}
 	
 	private void populateItems() {
+
+		String dir = "E:/test.itm"; //TODO: Make this selectable from a dialog
+		String currLine;
+		String[] data = new String[3];
+		int item, x, y;
 		
-		Item item;
+		//TODO: Open dialog to assign directory value
 		
-		item = new Item(tileMap);
-		item.setType(Item.AXE);
-		item.setTilePosition(26, 37);
-		items.add(item);
+		try{
+			FileReader input = new FileReader(dir);
+			BufferedReader reader = new BufferedReader(input);
+			
+			while((currLine = reader.readLine())!= null){
+				data = currLine.split(",");
+				item = Integer.parseInt(data[0]);
+				
+				y = Integer.parseInt(data[1]); //TODO:Investigate X/Y positions - Map viewer is inverted (Y/X)
+				x = Integer.parseInt(data[2]);
+				
+				placeItem(item,x,y);
+			}
+				
+			
+			
+		}catch (IOException e){
+			e.printStackTrace();
+		}
 		
-		item = new Item(tileMap);
-		item.setType(Item.BOAT);
-		item.setTilePosition(12, 4);
-		items.add(item);
+		
+
 		
 	}
+	
+	private void placeItem(int type, int x, int y){
+		Item item;
+		item = new Item(tileMap);
+		item.setType(type);
+		item.setTilePosition(x, y);
+		items.add(item);
+	}
+	
 	
 	public void update() {
 		
