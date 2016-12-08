@@ -18,6 +18,7 @@ import com.neet.DiamondHunter.Entity.Player;
 import com.neet.DiamondHunter.Entity.Sparkle;
 import com.neet.DiamondHunter.HUD.Hud;
 import com.neet.DiamondHunter.Main.GamePanel;
+import com.neet.DiamondHunter.Manager.Content;
 import com.neet.DiamondHunter.Manager.Data;
 import com.neet.DiamondHunter.Manager.GameStateManager;
 import com.neet.DiamondHunter.Manager.JukeBox;
@@ -28,6 +29,7 @@ public class PlayState extends GameState {
 	
 	// player
 	private Player player;
+	
 	
 	// tilemap
 	private TileMap tileMap;
@@ -175,15 +177,16 @@ public class PlayState extends GameState {
 	
 	private void populateItems() {
 
-		String dir = "E:/test.itm"; //TODO: Make this selectable from a dialog
+		if(Content.getItemMap() == ""){
+			placeItem(Item.AXE, 26, 37);
+			placeItem(Item.BOAT, 12, 4);
+		}else{
 		String currLine;
 		String[] data = new String[3];
 		int item, x, y;
 		
-		//TODO: Open dialog to assign directory value
-		
 		try{
-			FileReader input = new FileReader(dir);
+			FileReader input = new FileReader(Content.getItemMap());
 			BufferedReader reader = new BufferedReader(input);
 			
 			while((currLine = reader.readLine())!= null){
@@ -197,12 +200,12 @@ public class PlayState extends GameState {
 			}
 				
 			
-			
+			reader.close();
 		}catch (IOException e){
 			e.printStackTrace();
 		}
 		
-		
+		}
 
 		
 	}
