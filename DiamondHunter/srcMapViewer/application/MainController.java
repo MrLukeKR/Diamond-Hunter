@@ -82,6 +82,13 @@ public class MainController implements Initializable {
 	}
 	
 	@FXML
+	private void saveItemMap(ActionEvent event){
+		fileChooser.setTitle("Save Item Map");
+		String directory = fileChooser.showSaveDialog(stage).getAbsolutePath();
+		mapEditorModel.saveItemMap(directory);
+	}
+	
+	@FXML
 	private void handleLoadingMap(ActionEvent event){
 		fileChooser.setTitle("Open Map");
 		String directory = fileChooser.showOpenDialog(stage).getAbsolutePath();
@@ -174,6 +181,7 @@ public class MainController implements Initializable {
 			blockedLabel.setText(blockedLabel.getText() + " - has Boat");
 		else if(item == 2)
 			blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat");
+		
 	}
 
 	public void displayItem(int xLoc, int yLoc) {
