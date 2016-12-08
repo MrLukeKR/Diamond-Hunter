@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 public class Content {
 	
@@ -60,9 +61,16 @@ public class Content {
 		}
 	}
 
-	public static void setItemMap(String absolutePath) {
-		itemMap = absolutePath;
-	}
+	public static void loadItems() {
+		JFileChooser itemLoader = new JFileChooser();
+
+		int result = itemLoader.showOpenDialog(null);
+		
+		 if (result == JFileChooser.APPROVE_OPTION){
+			 System.out.println(itemLoader.getSelectedFile().getAbsolutePath());
+			itemMap = itemLoader.getSelectedFile().getAbsolutePath();
+		 }
+		}
 
 	public static String getItemMap() {
 		return itemMap;
