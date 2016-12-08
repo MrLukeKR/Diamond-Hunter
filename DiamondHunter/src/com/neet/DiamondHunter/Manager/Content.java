@@ -19,6 +19,8 @@ public class Content {
 	public static BufferedImage[][] SPARKLE = load("/Sprites/sparkle.gif", 16, 16);
 	public static BufferedImage[][] ITEMS = load("/Sprites/items.gif", 16, 16);
 	
+	private static String itemMap = "";
+	
 	public static BufferedImage[][] font = load("/HUD/font.gif", 8, 8);
 	
 	public static BufferedImage[][] load(String s, int w, int h) {
@@ -56,6 +58,14 @@ public class Content {
 			int col = c % font[0].length;
 			g.drawImage(font[row][col], x + 8 * i, y, null);
 		}
+	}
+
+	public static void setItemMap(String absolutePath) {
+		itemMap = absolutePath;
+	}
+
+	public static String getItemMap() {
+		return itemMap;
 	}
 	
 }
