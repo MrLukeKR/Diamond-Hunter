@@ -84,6 +84,7 @@ public class MainController implements Initializable {
 	@FXML
 	private void saveItemMap(ActionEvent event){
 		fileChooser.setTitle("Save Item Map");
+		fileChooser.setInitialFileName("itemmap.itm");
 		String directory = fileChooser.showSaveDialog(stage).getAbsolutePath();
 		mapEditorModel.saveItemMap(directory);
 	}
