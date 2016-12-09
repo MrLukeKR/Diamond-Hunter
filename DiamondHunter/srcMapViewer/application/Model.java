@@ -2,8 +2,6 @@ package application;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,32 +27,35 @@ public class Model {
 	
 	// tileset
 	private BufferedImage tileset;
+	private static BufferedImage spritesheet;
 	public int numTilesAcross;
 	private Tile[][] tiles;
-	public static BufferedImage[][] ITEMS = load("Resources/Sprites/items.gif", 16, 16);
+	public static BufferedImage[][] ITEMS; 
 	
 	private int axeX =-1, axeY=-1, boatX=-1, boatY=-1;
 	private int item =-1;
 	
 	public static int AXE = 1, BOAT = 0;
 	
-
+	public void loadItems(){
+		ITEMS = load("/Sprites/items.gif", 16, 16);
+	}
+	
 	public void saveItemMap(String dir){
-	try {
-		PrintWriter itemMapFile = new PrintWriter(dir,"UTF-8");
-		itemMapFile.println(AXE + "," + axeX + "," + axeY);
-		itemMapFile.println(BOAT + "," + boatX + "," + boatY);
-		itemMapFile.close();
-	} catch (FileNotFoundException | UnsupportedEncodingException e) {
-		e.printStackTrace();
-	}	
+		try {
+			PrintWriter itemMapFile = new PrintWriter(dir,"UTF-8");
+			itemMapFile.println(AXE + "," + axeX + "," + axeY);
+			itemMapFile.println(BOAT + "," + boatX + "," + boatY);
+			itemMapFile.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}	
 	}
 	 
 public void loadTiles(String s) {
 		
-		try {
-			
-			tileset = ImageIO.read(new File(s));
+		try {	
+			tileset = ImageIO.read(getClass().getResourceAsStream(s));
 			numTilesAcross = tileset.getWidth() / tileSize;
 			setTiles(new Tile[2][numTilesAcross]);
 			
@@ -89,15 +90,14 @@ public void updateCoordinates(int x, int y){
 }
 
 public void loadDefaultMap(){
-	loadTiles("Resources/Tilesets/testtileset.gif");
-	loadMap("Resources/Maps/testmap.map");
+	loadTiles("/Tilesets/testtileset.gif");
+	loadMap("/Maps/testmap.map");
 }
 	
 public void loadMap(String s) {
-	
 	try {
 		
-		InputStream in = new FileInputStream(new File(s));
+		InputStream in = getClass().getResourceAsStream(s);
 		BufferedReader br = new BufferedReader(
 					new InputStreamReader(in)
 				);
@@ -122,10 +122,10 @@ public void loadMap(String s) {
 	
 }
 
-public static BufferedImage[][] load(String s, int w, int h) {
+public BufferedImage[][] load(String s, int w, int h) {
 	BufferedImage[][] ret;
 	try {
-		BufferedImage spritesheet = ImageIO.read(new File(s));
+	    spritesheet = ImageIO.read(getClass().getResourceAsStream(s));
 		int width = spritesheet.getWidth() / w;
 		int height = spritesheet.getHeight() / h;
 		ret = new BufferedImage[height][width];
