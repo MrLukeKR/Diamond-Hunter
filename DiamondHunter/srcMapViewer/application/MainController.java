@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.embed.swing.SwingFXUtils;
@@ -31,7 +32,9 @@ public class MainController implements Initializable {
 	@FXML private GridPane mapGrid;
 	@FXML private Label coordLabel;
 	@FXML private Label blockedLabel;
-	private FileChooser fileChooser = new FileChooser();
+	private FileChooser tileFileChooser = new FileChooser();
+	private FileChooser mapFileChooser = new FileChooser();
+	private FileChooser itemFileChooser = new FileChooser();
 	
 
 	ImageView axeIcon = new ImageView();
@@ -48,18 +51,14 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void handleLoadingTileset(ActionEvent event){	
-		//TODO: Restrict file types to BufferedImage supported images
-		fileChooser.setTitle("Open Tileset");
-		String directory = fileChooser.showOpenDialog(stage).getAbsolutePath(); //TODO: Add dialog escape handling
-
-		if(validateDirectory(directory)){
-			mapEditorModel.loadTiles(directory);
-		
+		tileFileChooser.setTitle("Open Tileset");
+		tileFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("GIF", "*.gif"));
+		File tileFile = tileFileChooser.showOpenDialog(stage);
+		if(tileFile != null){
+			mapEditorModel.loadTiles(tileFile.getAbsolutePath());
 			loadMapButton.setDisable(false);
-		} else {
-			System.out.println("Invalid directory entered for Tileset Directory");
-		//TODO: JavaFX warning notification
 		}
+
 	}
 	
 	private TileButton createTileButton(int type, int index){
@@ -83,34 +82,28 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void saveItemMap(ActionEvent event){
-		fileChooser.setTitle("Save Item Map");
-		fileChooser.setInitialFileName("itemmap.itm");
-		String directory = fileChooser.showSaveDialog(stage).getAbsolutePath();
-		mapEditorModel.saveItemMap(directory);
+		itemFileChooser.setTitle("Save Item Map");
+		itemFileChooser.setInitialFileName("My Item Map");
+		itemFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Item Map", "*.itm"));
+		File itemFile = itemFileChooser.showSaveDialog(stage);
+
+		if(itemFile != null)
+			mapEditorModel.saveItemMap(itemFile.getAbsolutePath());
 	}
 	
 	@FXML
 	private void handleLoadingMap(ActionEvent event){
-		fileChooser.setTitle("Open Map");
-		String directory = fileChooser.showOpenDialog(stage).getAbsolutePath();
-
-		if(validateDirectory(directory)){
-			mapEditorModel.loadMap(directory);	
+		mapFileChooser.setTitle("Open Map");
+		mapFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Map", "*.map"));
+		File mapFile = mapFileChooser.showOpenDialog(stage);
+		if(mapFile != null){
+			mapEditorModel.loadMap(mapFile.getAbsolutePath());	
 			createMapGrid();
-
-		} else {
-			System.out.println("Invalid directory entered for Map Directory");
-			//TODO: JavaFX warning notification
 		}
 	}
 
-	void updateCoordinates(){
+	public void updateCoordinates(){
 		coordLabel.setText("X: " + mapEditorModel.getCurrentX() + " Y: " + mapEditorModel.getCurrentY());
-	}
-	
-	private boolean validateDirectory(String directory){
-		return true; //TODO: Fix the regex pattern
-		//return Pattern.matches("^(.+)/([^/]+)$", directory);
 	}
 	
 	public void loadDefaultMap(){
@@ -130,7 +123,6 @@ public class MainController implements Initializable {
 				tempButton.setModel(mapEditorModel);
 				tempButton.setCoordinates(c, r);
 				mapGrid.add(tempButton, c, r);
-				
 		}
 		
 	}
@@ -159,8 +151,11 @@ public class MainController implements Initializable {
 		assert loadMapButton != null : "Load Map button was not injected!";
 		assert mapGrid != null: "Map Grid was not injected!";
 		assert boatButton != null: "Boat Button was not injected!";
+		
+		
 		loadDefaultMap();
-
+		mapEditorModel.loadItems();
+		
 		axeIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][Model.AXE], null));
 		boatIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][Model.BOAT], null));
 		
@@ -170,7 +165,7 @@ public class MainController implements Initializable {
 
 	public void updateIsBlocked(boolean isBlocked) {
 		if (isBlocked)
-		blockedLabel.setText("Blocked");
+			blockedLabel.setText("Blocked");
 		else
 			blockedLabel.setText("Unblocked");
 	}
@@ -182,11 +177,9 @@ public class MainController implements Initializable {
 			blockedLabel.setText(blockedLabel.getText() + " - has Boat");
 		else if(item == 2)
 			blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat");
-		
 	}
 
 	public void displayItem(int xLoc, int yLoc) {
-		
 		if(mapEditorModel.getCurrentItem() == 1){
 			axeButton.setGraphic(null);
 			if(mapEditorModel.itemPlaced(1))
@@ -198,7 +191,5 @@ public class MainController implements Initializable {
 				mapGrid.getChildren().removeAll(boatIcon);
 			mapGrid.add(boatIcon, xLoc, yLoc);
 		}
-		
-		
 	}
 }
