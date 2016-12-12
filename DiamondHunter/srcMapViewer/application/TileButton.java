@@ -37,6 +37,7 @@ public class TileButton extends ImageView{
 			@Override
 			public void handle(MouseEvent arg0) {
 				model.placeItem(xLoc, yLoc, isBlocked);
+				model.updateCoordinates(xLoc, yLoc, isBlocked);
 			}
 			
 		});
