@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -39,7 +38,6 @@ public class MainController implements Initializable {
 
 	ImageView axeIcon = new ImageView();
 	ImageView boatIcon = new ImageView();
-	
 
 	public static void setModel(Model model){
 		mapEditorModel = model;
@@ -55,29 +53,9 @@ public class MainController implements Initializable {
 		tileFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("GIF", "*.gif"));
 		File tileFile = tileFileChooser.showOpenDialog(stage);
 		if(tileFile != null){
-			mapEditorModel.loadTiles(tileFile.getAbsolutePath());
+			mapEditorModel.loadTiles(tileFile);
 			loadMapButton.setDisable(false);
 		}
-
-	}
-	
-	private TileButton createTileButton(int type, int index){
-		Image icon = SwingFXUtils.toFXImage(mapEditorModel.getTiles()[type][index].image, null);
-		TileButton newButton = new TileButton(icon);
-		if(type == 1)
-			newButton.setIsBlocked(true);
-		else
-			newButton.setIsBlocked(false);
-		return newButton;		
-	}
-	
-	private TileButton createTileButton(int mapValue){
-		int tilesPerRow = mapEditorModel.numTilesAcross;
-
-		if(mapValue >= tilesPerRow)
-			return createTileButton(1, mapValue - tilesPerRow);
-		else
-			return createTileButton(0, mapValue);
 	}
 	
 	@FXML
@@ -97,8 +75,8 @@ public class MainController implements Initializable {
 		mapFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Map", "*.map"));
 		File mapFile = mapFileChooser.showOpenDialog(stage);
 		if(mapFile != null){
-			mapEditorModel.loadMap(mapFile.getAbsolutePath());	
-			createMapGrid();
+			mapEditorModel.loadMap(mapFile);	
+			mapEditorModel.createMapGrid(mapGrid);
 		}
 	}
 
@@ -108,23 +86,7 @@ public class MainController implements Initializable {
 	
 	public void loadDefaultMap(){
 		mapEditorModel.loadDefaultMap();
-		createMapGrid();
-	}
-	
-	private void createMapGrid(){
-		int cols = mapEditorModel.getNumCols();
-		int rows = mapEditorModel.getNumRows();
-		int [][] map = mapEditorModel.getMap();
-		
-		for(int r = 0; r < rows; r++)
-			for(int c = 0; c < cols; c++){		
-				TileButton tempButton = createTileButton(map[r][c]);
-				tempButton.setController(this);
-				tempButton.setModel(mapEditorModel);
-				tempButton.setCoordinates(c, r);
-				mapGrid.add(tempButton, c, r);
-		}
-		
+		mapEditorModel.createMapGrid(mapGrid);
 	}
 	
 	@FXML private void axeToggled(ActionEvent event){
@@ -147,6 +109,8 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		mapEditorModel.setController(this);
+		
 		assert loadTilesetButton != null : "Load Tileset button was not injected!";
 		assert loadMapButton != null : "Load Map button was not injected!";
 		assert mapGrid != null: "Map Grid was not injected!";
