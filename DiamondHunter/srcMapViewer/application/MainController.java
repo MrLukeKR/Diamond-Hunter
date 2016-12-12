@@ -16,8 +16,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class MainController implements Initializable {
-
-	
 	private static Stage stage;
 	private static Model mapEditorModel;
 	
@@ -35,22 +33,14 @@ public class MainController implements Initializable {
 	private FileChooser mapFileChooser = new FileChooser();
 	private FileChooser itemFileChooser = new FileChooser();
 	
-
 	ImageView axeIcon = new ImageView();
 	ImageView boatIcon = new ImageView();
 
-	public static void setModel(Model model){
-		mapEditorModel = model;
-	}
-	
-	public static void setStage(Stage newStage){
-		stage = newStage;
-	}
+	public static void setModel(Model model){ mapEditorModel = model; }
+	public static void setStage(Stage newStage){ stage = newStage; }
 	
 	@FXML
 	private void handleLoadingTileset(ActionEvent event){	
-		tileFileChooser.setTitle("Open Tileset");
-		tileFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("GIF", "*.gif"));
 		File tileFile = tileFileChooser.showOpenDialog(stage);
 		if(tileFile != null){
 			mapEditorModel.loadTiles(tileFile);
@@ -60,9 +50,6 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void saveItemMap(ActionEvent event){
-		itemFileChooser.setTitle("Save Item Map");
-		itemFileChooser.setInitialFileName("My Item Map");
-		itemFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Item Map", "*.itm"));
 		File itemFile = itemFileChooser.showSaveDialog(stage);
 
 		if(itemFile != null)
@@ -71,22 +58,11 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void handleLoadingMap(ActionEvent event){
-		mapFileChooser.setTitle("Open Map");
-		mapFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Map", "*.map"));
 		File mapFile = mapFileChooser.showOpenDialog(stage);
 		if(mapFile != null){
 			mapEditorModel.loadMap(mapFile);	
 			mapEditorModel.createMapGrid(mapGrid);
 		}
-	}
-
-	public void updateCoordinates(){
-		coordLabel.setText("X: " + mapEditorModel.getCurrentX() + " Y: " + mapEditorModel.getCurrentY());
-	}
-	
-	public void loadDefaultMap(){
-		mapEditorModel.loadDefaultMap();
-		mapEditorModel.createMapGrid(mapGrid);
 	}
 	
 	@FXML private void axeToggled(ActionEvent event){
@@ -116,31 +92,62 @@ public class MainController implements Initializable {
 		assert mapGrid != null: "Map Grid was not injected!";
 		assert boatButton != null: "Boat Button was not injected!";
 		
-		
+		initTileFileChooser();
+		initSaveMapChooser();
+		initMapFileChooser();
+
 		loadDefaultMap();
 		mapEditorModel.loadItems();
 		
+		initIcons();
+	}
+	
+	public void updateCoordinates(){
+		coordLabel.setText("X: " + mapEditorModel.getCurrentX() + " Y: " + mapEditorModel.getCurrentY());
+	}
+	
+	public void loadDefaultMap(){
+		mapEditorModel.loadDefaultMap();
+		mapEditorModel.createMapGrid(mapGrid);
+	}
+	
+	private void initTileFileChooser(){
+		tileFileChooser.setTitle("Open Tileset");
+		tileFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("GIF", "*.gif"));
+	}
+	
+	private void initSaveMapChooser(){
+		itemFileChooser.setTitle("Save Item Map");
+		itemFileChooser.setInitialFileName("My Item Map");
+		itemFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Item Map", "*.itm"));
+	}
+	
+	private void initMapFileChooser(){
+		mapFileChooser.setTitle("Open Map");
+		mapFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Map", "*.map"));
+	}
+
+	public void updateIsBlocked(boolean isBlocked) {
+		if (isBlocked)  blockedLabel.setText("Blocked");
+		else 			blockedLabel.setText("Unblocked");
+	}
+	
+	private void initIcons(){
 		axeIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][Model.AXE], null));
 		boatIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][Model.BOAT], null));
 		
 		axeButton.setGraphic(axeIcon);
 		boatButton.setGraphic(boatIcon);
 	}
-
-	public void updateIsBlocked(boolean isBlocked) {
-		if (isBlocked)
-			blockedLabel.setText("Blocked");
-		else
-			blockedLabel.setText("Unblocked");
-	}
 	
 	public void updateHasItem(int item){
-		if(item == Model.AXE)
-			blockedLabel.setText(blockedLabel.getText() + " - has Axe");
-		else if(item == Model.BOAT)
-			blockedLabel.setText(blockedLabel.getText() + " - has Boat");
-		else if(item == 2)
-			blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat");
+		switch(item){
+			case Model.EMPTY:blockedLabel.setText(blockedLabel.getText() + " - has no items"); break;
+			case Model.AXE:  blockedLabel.setText(blockedLabel.getText() + " - has Axe"); break;
+			case Model.BOAT: blockedLabel.setText(blockedLabel.getText() + " - has Boat"); break;
+			case 2: blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat"); break;
+		}
+
 	}
 
 	public void displayItem(int xLoc, int yLoc) {
