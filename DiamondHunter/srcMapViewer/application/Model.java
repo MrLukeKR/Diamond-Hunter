@@ -2,19 +2,28 @@ package application;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 
 public class Model {
 
+	private MainController controller;
 	
 	// map
 	private int[][] map;
@@ -51,32 +60,55 @@ public class Model {
 			e.printStackTrace();
 		}	
 	}
+	
+	private TileButton createTileButton(int type, int index){
+		Image icon = SwingFXUtils.toFXImage(getTiles()[type][index].image, null);
+		TileButton newButton = new TileButton(icon);
+		if(type == 1)
+			newButton.setIsBlocked(true);
+		else
+			newButton.setIsBlocked(false);
+		return newButton;		
+	}
+	
+	private TileButton createTileButton(int mapValue){
+		if(mapValue >= numTilesAcross)
+			return createTileButton(1, mapValue - numTilesAcross);
+		else
+			return createTileButton(0, mapValue);
+	}
+	
+	public void createMapGrid(GridPane mapGrid){
+		int cols = getNumCols();
+		int rows = getNumRows();
+		int [][] map = getMap();
+		
+		for(int r = 0; r < rows; r++)
+			for(int c = 0; c < cols; c++){		
+				TileButton tempButton = createTileButton(map[r][c]);
+				tempButton.setModel(this);
+				tempButton.setCoordinates(c, r);
+				mapGrid.add(tempButton, c, r);
+		}
+		
+	}
 	 
+	public void loadTiles(File f){
+		try {
+			tileset = ImageIO.read(f);
+			processTiles(tileset);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 public void loadTiles(String s) {
 		
 		try {	
 			tileset = ImageIO.read(getClass().getResourceAsStream(s));
-			numTilesAcross = tileset.getWidth() / tileSize;
-			setTiles(new Tile[2][numTilesAcross]);
-			
-			BufferedImage subimage;
-			for(int col = 0; col < numTilesAcross; col++) {
-				subimage = tileset.getSubimage(
-							col * tileSize,
-							0,
-							tileSize,
-							tileSize
-						);
-				getTiles()[0][col] = new Tile(subimage, Tile.NORMAL);
-				subimage = tileset.getSubimage(
-							col * tileSize,
-							tileSize,
-							tileSize,
-							tileSize
-						);
-				getTiles()[1][col] = new Tile(subimage, Tile.BLOCKED);
-			}
-			
+			processTiles(tileset);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -84,9 +116,41 @@ public void loadTiles(String s) {
 		
 	}
 
-public void updateCoordinates(int x, int y){
+public void processTiles(BufferedImage tileset){
+	numTilesAcross = tileset.getWidth() / tileSize;
+	setTiles(new Tile[2][numTilesAcross]);
+	
+	BufferedImage subimage;
+	for(int col = 0; col < numTilesAcross; col++) {
+		subimage = tileset.getSubimage(
+					col * tileSize,
+					0,
+					tileSize,
+					tileSize
+				);
+		getTiles()[0][col] = new Tile(subimage, Tile.NORMAL);
+		subimage = tileset.getSubimage(
+					col * tileSize,
+					tileSize,
+					tileSize,
+					tileSize
+				);
+		getTiles()[1][col] = new Tile(subimage, Tile.BLOCKED);
+	}
+}
+
+public void updateCoordinates(int x, int y, boolean isBlocked){
 	currentX = x;
 	currentY = y;
+	
+	controller.updateCoordinates();
+	
+	int tempItem = getItem(x, y);
+	
+	if(tempItem != -1)
+		controller.updateHasItem(tempItem);
+	
+	controller.updateIsBlocked(isBlocked);
 }
 
 public void loadDefaultMap(){
@@ -94,32 +158,48 @@ public void loadDefaultMap(){
 	loadMap("/Maps/testmap.map");
 }
 	
+public void loadMap(File f){
+	try {
+		InputStream in = new FileInputStream(f);
+		processMap(in);
+	} catch (FileNotFoundException e) {
+		e.printStackTrace();
+	}
+}
+
 public void loadMap(String s) {
 	try {
-		
 		InputStream in = getClass().getResourceAsStream(s);
-		BufferedReader br = new BufferedReader(
-					new InputStreamReader(in)
-				);
-		
-		setNumCols(Integer.parseInt(br.readLine()));
-		setNumRows(Integer.parseInt(br.readLine()));
-		setMap(new int[getNumRows()][getNumCols()]);
-		
-		String delims = "\\s+";
-		for(int row = 0; row < getNumRows(); row++) {
-			String line = br.readLine();
-			String[] tokens = line.split(delims);
-			for(int col = 0; col < getNumCols(); col++) {
-				getMap()[row][col] = Integer.parseInt(tokens[col]);
-			}
-		}
-		br.close();
+		processMap(in);
 	}
 	catch(Exception e) {
 		e.printStackTrace();
 	}
+}
+
+public void processMap(InputStream in){
+	try {
+	BufferedReader br = new BufferedReader(
+				new InputStreamReader(in)
+			);
 	
+	setNumCols(Integer.parseInt(br.readLine()));
+	setNumRows(Integer.parseInt(br.readLine()));
+	setMap(new int[getNumRows()][getNumCols()]);
+	
+	String delims = "\\s+";
+	for(int row = 0; row < getNumRows(); row++) {
+		String line = br.readLine();
+		String[] tokens = line.split(delims);
+		for(int col = 0; col < getNumCols(); col++) {
+			getMap()[row][col] = Integer.parseInt(tokens[col]);
+		}
+	}
+	br.close();
+	}
+	catch(Exception e) {
+		e.printStackTrace();
+	}
 }
 
 public BufferedImage[][] load(String s, int w, int h) {
@@ -214,6 +294,8 @@ public boolean placeItem(int xLoc, int yLoc, boolean blocked) {
 	}else
 		return false;
 	
+	controller.displayItem(xLoc, yLoc);
+	
 	return true;
 }
 
@@ -228,7 +310,6 @@ public boolean itemPlaced(int i) {
 	}else if (i == BOAT)
 		if(boatX == -1 && boatY == -1)
 			return false;
-	
 		return true;
 }
 
@@ -241,4 +322,8 @@ public int getItem(int xLoc, int yLoc) {
 		return BOAT;
 	return -1;
 }
+
+	public void setController(MainController mainController) {
+		controller = mainController;
+	}
 }
