@@ -15,7 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class MainController implements Initializable {
+public class Controller implements Initializable {
 	private static Stage stage;
 	private static Model mapEditorModel;
 	
@@ -54,24 +54,7 @@ public class MainController implements Initializable {
 		initIcons();
 	}
 	
-	private void confirmSuccessfulLoad(){
-			try {
-				if(loadTilesetButton == null) 	throw new Exception("Load Tileset button was not injected!");
-				if( loadMapButton == null) 		throw new Exception( "Load Map button was not injected!");
-				if( saveMapButton == null) 		throw new Exception( "Save Map Button was not injected!");
-				if( closeButton == null)		throw new Exception( "Close Button was not injected!");
-				if( axeButton == null) 			throw new Exception( "Axe Button was not injected!");
-				if( boatButton == null) 		throw new Exception( "Boat Button was not injected!");		
-				if( mapGrid == null) 			throw new Exception( "Map Grid was not injected!");
-				if( coordLabel  == null) 		throw new Exception( "Coordinate Label was not injected!");
-				if( blockedLabel  == null) 		throw new Exception( "Blocked Label was not injected!");
-				if( tileFileChooser  == null) 	throw new Exception( "Tile File Chooser was not created!");
-				if( mapFileChooser  == null) 	throw new Exception( "Map File Chooser was not created!");
-				if( itemFileChooser  == null) 	throw new Exception( "Item File Chooser was not created!");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-	}
+	//FXML Methods
 	
 	@FXML
 	private void handleLoadingTileset(ActionEvent event){	
@@ -85,9 +68,7 @@ public class MainController implements Initializable {
 	@FXML
 	private void saveItemMap(ActionEvent event){
 		File itemFile = itemFileChooser.showSaveDialog(stage);
-
-		if(itemFile != null)
-			mapEditorModel.saveItemMap(itemFile.getAbsolutePath());
+		if(itemFile != null) mapEditorModel.saveItemMap(itemFile.getAbsolutePath());
 	}
 	
 	@FXML
@@ -113,8 +94,27 @@ public class MainController implements Initializable {
 			mapEditorModel.setItem(Model.EMPTY);
 	}
 	
-	@FXML private void exitApplication(ActionEvent event){
-		System.exit(0);
+	@FXML private void exitApplication(ActionEvent event){ System.exit(0); }
+	
+	//Non-FXML Methods
+	
+	private void confirmSuccessfulLoad(){
+		try {
+			if(loadTilesetButton == null) 	throw new Exception("Load Tileset button was not injected!");
+			if( loadMapButton == null) 		throw new Exception( "Load Map button was not injected!");
+			if( saveMapButton == null) 		throw new Exception( "Save Map Button was not injected!");
+			if( closeButton == null)		throw new Exception( "Close Button was not injected!");
+			if( axeButton == null) 			throw new Exception( "Axe Button was not injected!");
+			if( boatButton == null) 		throw new Exception( "Boat Button was not injected!");		
+			if( mapGrid == null) 			throw new Exception( "Map Grid was not injected!");
+			if( coordLabel  == null) 		throw new Exception( "Coordinate Label was not injected!");
+			if( blockedLabel  == null) 		throw new Exception( "Blocked Label was not injected!");
+			if( tileFileChooser  == null) 	throw new Exception( "Tile File Chooser was not created!");
+			if( mapFileChooser  == null) 	throw new Exception( "Map File Chooser was not created!");
+			if( itemFileChooser  == null) 	throw new Exception( "Item File Chooser was not created!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void updateCoordinates(){
@@ -157,12 +157,11 @@ public class MainController implements Initializable {
 	
 	public void updateHasItem(int item){
 		switch(item){
-			case Model.EMPTY:blockedLabel.setText(blockedLabel.getText() + " - has no items"); break;
-			case Model.AXE:  blockedLabel.setText(blockedLabel.getText() + " - has Axe"); break;
-			case Model.BOAT: blockedLabel.setText(blockedLabel.getText() + " - has Boat"); break;
-			case 2: blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat"); break;
+			case Model.EMPTY:blockedLabel.setText(blockedLabel.getText() + " - has no items"); 		break;
+			case Model.AXE:  blockedLabel.setText(blockedLabel.getText() + " - has Axe"); 			break;
+			case Model.BOAT: blockedLabel.setText(blockedLabel.getText() + " - has Boat"); 			break;
+			case Model.BOTH: blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat"); 	break;
 		}
-
 	}
 
 	public void displayItem(int xLoc, int yLoc) {
