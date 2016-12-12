@@ -5,24 +5,22 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
-public class Model {
+public class Model {	
+	public static final int EMPTY= - 1, AXE = 1, BOAT = 0;
 
+	
 	private MainController controller;
 	
 	// map
@@ -41,11 +39,9 @@ public class Model {
 	private Tile[][] tiles;
 	public static BufferedImage[][] ITEMS; 
 	
-	private int axeX =-1, axeY=-1, boatX=-1, boatY=-1;
-	private int item =-1;
-	
-	public static int AXE = 1, BOAT = 0;
-	
+	private int axeX = EMPTY, axeY = EMPTY, boatX = EMPTY, boatY = EMPTY;
+	private int item = EMPTY;
+
 	public void loadItems(){
 		ITEMS = load("/Sprites/items.gif", 16, 16);
 	}
@@ -140,17 +136,11 @@ public void processTiles(BufferedImage tileset){
 }
 
 public void updateCoordinates(int x, int y, boolean isBlocked){
-	currentX = x;
-	currentY = y;
-	
+	currentX = x; currentY = y;
 	controller.updateCoordinates();
-	
-	int tempItem = getItem(x, y);
-	
-	if(tempItem != -1)
-		controller.updateHasItem(tempItem);
-	
 	controller.updateIsBlocked(isBlocked);
+	controller.updateHasItem(getItem(x, y));
+	
 }
 
 public void loadDefaultMap(){
@@ -160,20 +150,18 @@ public void loadDefaultMap(){
 	
 public void loadMap(File f){
 	try {
-		InputStream in = new FileInputStream(f);
-		processMap(in);
+		processMap(new FileInputStream(f));
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
 	}
 }
 
 public void loadMap(String s) {
-	try {
-		InputStream in = getClass().getResourceAsStream(s);
-		processMap(in);
-	}
-	catch(Exception e) {
-		e.printStackTrace();
+	try { 
+		processMap(getClass().getResourceAsStream(s));
+	} catch(Exception e) 
+	{ 
+		e.printStackTrace(); 
 	}
 }
 
@@ -277,7 +265,7 @@ public void setItem(int itemID) {
 }
 
 public boolean placeItem(int xLoc, int yLoc, boolean blocked) {
-	if(blocked && item != -1){
+	if(blocked && item != EMPTY){
 		Alert warning = new Alert(AlertType.WARNING);
 		warning.setTitle("Blocked Tile");
 		warning.setHeaderText("You're about to add an item to a blocked tile!");
@@ -305,10 +293,10 @@ public int getCurrentItem() {
 
 public boolean itemPlaced(int i) {
 	if(i == AXE){
-		if(axeX == -1 && axeY == -1)
+		if(axeX == EMPTY && axeY == EMPTY)
 			return false;
 	}else if (i == BOAT)
-		if(boatX == -1 && boatY == -1)
+		if(boatX == EMPTY && boatY == EMPTY)
 			return false;
 		return true;
 }
@@ -320,7 +308,7 @@ public int getItem(int xLoc, int yLoc) {
 		return AXE;
 	else if(xLoc == boatX && yLoc == boatY)
 		return BOAT;
-	return -1;
+	return EMPTY;
 }
 
 	public void setController(MainController mainController) {
