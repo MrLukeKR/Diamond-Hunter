@@ -19,6 +19,9 @@ import javafx.scene.paint.Color;
 
 public class TileButton extends ImageView{
 
+	/**
+	 * The ImageView effect used with this TileButton - will show a red border if the TileButton is blocked, black border if not
+	 */
 	private Effect selected;
 
 	/**
@@ -96,6 +99,4 @@ public class TileButton extends ImageView{
 			public void handle(MouseEvent event) { setEffect(null); }
 			});
 	}
-
-	
 }
