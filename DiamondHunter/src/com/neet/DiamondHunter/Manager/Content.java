@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Content {
 	
@@ -63,7 +64,7 @@ public class Content {
 
 	public static void loadItems() {
 		JFileChooser itemLoader = new JFileChooser();
-
+		itemLoader.setFileFilter(new FileNameExtensionFilter("Item Map File","itm"));
 		int result = itemLoader.showOpenDialog(null);
 		
 		 if (result == JFileChooser.APPROVE_OPTION){
