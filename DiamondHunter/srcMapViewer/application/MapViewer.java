@@ -7,20 +7,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
-public class Main extends Application {
+public class MapViewer extends Application {
 
 	private Model model = new Model();
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			MainController.setModel(model);
-			MainController.setStage(primaryStage);
+			Controller.setModel(model);
+			Controller.setStage(primaryStage);
 			
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root,650,795);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			Parent content = FXMLLoader.load(getClass().getClassLoader().getResource("FXMLLayout.fxml"));
+			Parent content = FXMLLoader.load(getClass().getClassLoader().getResource("View.fxml"));
 			root.setCenter(content);
 			
 			primaryStage.setScene(scene);

@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="805.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<AnchorPane prefHeight="805.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
       <BorderPane prefHeight="800.0" prefWidth="650.0">
          <top>
