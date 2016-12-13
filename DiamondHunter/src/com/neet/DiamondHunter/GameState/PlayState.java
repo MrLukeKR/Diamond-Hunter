@@ -193,7 +193,7 @@ public class PlayState extends GameState {
 				data = currLine.split(",");
 				item = Integer.parseInt(data[0]);
 				
-				y = Integer.parseInt(data[1]); //TODO:Investigate X/Y positions - Map viewer is inverted (Y/X)
+				y = Integer.parseInt(data[1]);
 				x = Integer.parseInt(data[2]);
 				
 				placeItem(item,x,y);
