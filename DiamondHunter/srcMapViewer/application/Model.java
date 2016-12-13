@@ -27,7 +27,7 @@ import javafx.scene.layout.GridPane;
  *
  */
 
-public class Model {	
+public class Model implements IModel {	
 	/**
 	 * Constant value that represents an EMPTY item
 	 */
@@ -78,7 +78,7 @@ public class Model {
 	/**
 	 * Loads items from an item spritesheet into the item buffer
 	 */
-	public void loadItems(){ ITEMS = load("/Sprites/items.gif", 16, 16); }
+	public void loadItems(){ ITEMS = loadItems("/Sprites/items.gif", 16, 16); }
 	
 	/**
 	 * Gives the Model a reference to a Controller so that it may access functions that update the user interface
@@ -269,7 +269,7 @@ public class Model {
 	 * @param h - The height of the icons
 	 * @return A buffer containing the separate item icons
 	 */
-	public BufferedImage[][] load(String s, int w, int h) {
+	public BufferedImage[][] loadItems(String s, int w, int h) {
 		BufferedImage[][] ret;
 		try {
 			spritesheet = ImageIO.read(getClass().getResourceAsStream(s));
