@@ -25,8 +25,6 @@ public class MapViewer extends Application {
 			
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
-
-
 			primaryStage.setTitle("Diamond Hunter Map Editor");
 			primaryStage.show();
 		} catch(Exception e) {
