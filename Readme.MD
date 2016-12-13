@@ -45,5 +45,7 @@ The game is now ready to play!
 ![SavingItems](/uploads/27edd42e6a0f2fa1ec859e225e2cfcf2/SavingItems.jpg)
 ### New Menu Item In Diamond Hunter
 ![DiamondHunterV2](/uploads/93bace6d0907e5219ae777302c33ca88/DiamondHunterV2.jpg)
+### Selecting The Item Map File
+![LoadingItems](/uploads/b7533f1221a5fcca79d671bbd34fde24/LoadingItems.jpg)
 ### Playing The Game With The New Items
 ![ItemsPlaced](/uploads/0a14e7c7a42a3070efc791ac8fdcdb0b/ItemsPlaced.jpg)
