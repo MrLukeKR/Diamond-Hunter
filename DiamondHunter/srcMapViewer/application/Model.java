@@ -163,7 +163,6 @@ public class Model {
 	 * @param s - The Resource's file path
 	 */
 	public void loadTiles(String s) {
-		
 		try {	
 			tileset = ImageIO.read(getClass().getResourceAsStream(s));
 			processTiles(tileset);
@@ -291,28 +290,98 @@ public class Model {
 		return null;
 	}
 
+	
+	/**
+	 * Sets the number of rows in the map
+	 * @param numRows - Number of rows in the map
+	 */
 	public void setNumRows(int numRows) { this.numRows = numRows; }
+	
+	/**
+	 * Returns the number of rows in the map
+	 * @return The number of rows in the map
+	 */
 	public int getNumRows() 			{ return numRows; }
 
+	/**
+	 * Sets the number of columns in the map
+	 * @param numCols - Number of columns in the map
+	 */
 	public void setNumCols(int numCols) { this.numCols = numCols; }
+	
+	/**
+	 * Returns the number of columns in the map
+	 * @return The number of columns in the map
+	 */
 	public int getNumCols() 			{ return numCols; }
 
+	/**
+	 * Sets which tiles to use in the map
+	 * @param tiles - 2D array of Tiles (Blocked and Unblocked)
+	 */
 	public void setTiles(Tile[][] tiles){ this.tiles = tiles; }
+	
+	/**
+	 * Returns the currently used Tile Set
+	 * @return Currently assigned Tile buffer
+	 */
 	public Tile[][] getTiles() 			{ return tiles; }
 
+	/**
+	 * Sets the map up, where each array element is a Tile index
+	 * @param map - 2D array of integers that represent Tile indexes
+	 */
 	public void setMap(int[][] map)		{ this.map = map; }
+	
+	/**
+	 * Returns the currently assigned map
+	 * @return A 2D array of integers that represent Tile indexes
+	 */
 	public int[][] getMap() 			{ return map; }
 
+	/**
+	 * Sets the currently selected x coordinate
+	 * @param x - Currently selected x coordinate
+	 */
 	public void setCurrentX(int x)		{ currentX = x; }
+	
+	/**
+	 * Gets the currently selected x coordinate
+	 * @return Currently selected x coordinate
+	 */
 	public int getCurrentX() 			{ return currentX; }
 
+	/**
+	 * Sets the currently selected y coordinate
+	 * @param y - Currently selected y coordinate
+	 */
 	public void setCurrentY(int y) 		{ currentY = y; }
+	
+	/**
+	 * Gets the currently selected y coordinate
+	 * @return Currently selected y coordinate
+	 */
 	public int getCurrentY() 			{ return currentY; }
 
+	/**
+	 * Informs the Model of which Item is currently held by the user for placement on the Map
+	 * @param itemID - The item type (Axe, Boat, etc.)
+	 */
 	public void setItem(int itemID) { item = itemID; }
 
+	/**
+	 * Gets the Item currently held by the user for placement on the Map
+	 * @return The item type (Axe, Boat, etc.)
+	 */
 	public int getCurrentItem() { return item; }
 
+	/**
+	 * Sets the location of the currently selected item (from getCurrentItem())
+	 * @param xLoc - The x coordinate of the item
+	 * @param yLoc - The y coordinate of the item
+	 * @param blocked - Whether or not the item blocks user access
+	 * @return True if successful, False if the selected Item doesn't exist or isn't implemented
+	 */
 	public boolean placeItem(int xLoc, int yLoc, boolean blocked) {
 		if(blocked && item != EMPTY){
 			Alert warning = new Alert(AlertType.WARNING);
@@ -331,6 +400,11 @@ public class Model {
 		return true;
 	}
 
+	/**
+	 * Gets whether or not an item exists on the map
+	 * @param i - The Item type (Axe, Boat, etc.)
+	 * @return True if the item is on the map, False if not
+	 */
 	public boolean itemPlaced(int i) {
 		boolean axeExists  = (axeX  != EMPTY && axeY  != EMPTY);
 		boolean boatExists = (boatX != EMPTY && boatY != EMPTY);
@@ -343,6 +417,12 @@ public class Model {
 		return true;
 	}
 
+	/**
+	 * Gets the Item at a given X/Y coordinate
+	 * @param xLoc - x coordinate to check for an Item
+	 * @param yLoc - y coordinate to check for an Item
+	 * @return The Item number (Axe, Boat, Both or Empty)
+	 */
 	public int getItemID(int xLoc, int yLoc) {
 		boolean axePlaced  = (xLoc == axeX && yLoc == axeY);
 		boolean boatPlaced = (xLoc == boatX && yLoc == boatY);
