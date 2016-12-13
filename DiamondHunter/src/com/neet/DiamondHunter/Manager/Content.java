@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Content {
 	
@@ -18,6 +20,8 @@ public class Content {
 	public static BufferedImage[][] DIAMOND = load("/Sprites/diamond.gif", 16, 16);
 	public static BufferedImage[][] SPARKLE = load("/Sprites/sparkle.gif", 16, 16);
 	public static BufferedImage[][] ITEMS = load("/Sprites/items.gif", 16, 16);
+	
+	private static String itemMap = "";
 	
 	public static BufferedImage[][] font = load("/HUD/font.gif", 8, 8);
 	
@@ -56,6 +60,21 @@ public class Content {
 			int col = c % font[0].length;
 			g.drawImage(font[row][col], x + 8 * i, y, null);
 		}
+	}
+
+	public static void loadItems() {
+		JFileChooser itemLoader = new JFileChooser();
+		itemLoader.setFileFilter(new FileNameExtensionFilter("Item Map File","itm"));
+		int result = itemLoader.showOpenDialog(null);
+		
+		 if (result == JFileChooser.APPROVE_OPTION){
+			 System.out.println(itemLoader.getSelectedFile().getAbsolutePath());
+			itemMap = itemLoader.getSelectedFile().getAbsolutePath();
+		 }
+		}
+
+	public static String getItemMap() {
+		return itemMap;
 	}
 	
 }

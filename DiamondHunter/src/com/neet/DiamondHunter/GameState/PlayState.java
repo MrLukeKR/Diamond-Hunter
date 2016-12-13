@@ -7,6 +7,9 @@ package com.neet.DiamondHunter.GameState;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.neet.DiamondHunter.Entity.Diamond;
@@ -15,6 +18,7 @@ import com.neet.DiamondHunter.Entity.Player;
 import com.neet.DiamondHunter.Entity.Sparkle;
 import com.neet.DiamondHunter.HUD.Hud;
 import com.neet.DiamondHunter.Main.GamePanel;
+import com.neet.DiamondHunter.Manager.Content;
 import com.neet.DiamondHunter.Manager.Data;
 import com.neet.DiamondHunter.Manager.GameStateManager;
 import com.neet.DiamondHunter.Manager.JukeBox;
@@ -25,6 +29,7 @@ public class PlayState extends GameState {
 	
 	// player
 	private Player player;
+	
 	
 	// tilemap
 	private TileMap tileMap;
@@ -171,20 +176,48 @@ public class PlayState extends GameState {
 	}
 	
 	private void populateItems() {
+
+		if(Content.getItemMap() == ""){
+			placeItem(Item.AXE, 26, 37);
+			placeItem(Item.BOAT, 12, 4);
+		}else{
+		String currLine;
+		String[] data = new String[3];
+		int item, x, y;
 		
-		Item item;
+		try{
+			FileReader input = new FileReader(Content.getItemMap());
+			BufferedReader reader = new BufferedReader(input);
+			
+			while((currLine = reader.readLine())!= null){
+				data = currLine.split(",");
+				item = Integer.parseInt(data[0]);
+				
+				y = Integer.parseInt(data[1]);
+				x = Integer.parseInt(data[2]);
+				
+				placeItem(item,x,y);
+			}
+				
+			
+			reader.close();
+		}catch (IOException e){
+			e.printStackTrace();
+		}
 		
-		item = new Item(tileMap);
-		item.setType(Item.AXE);
-		item.setTilePosition(26, 37);
-		items.add(item);
-		
-		item = new Item(tileMap);
-		item.setType(Item.BOAT);
-		item.setTilePosition(12, 4);
-		items.add(item);
+		}
+
 		
 	}
+	
+	private void placeItem(int type, int x, int y){
+		Item item;
+		item = new Item(tileMap);
+		item.setType(type);
+		item.setTilePosition(x, y);
+		items.add(item);
+	}
+	
 	
 	public void update() {
 		
