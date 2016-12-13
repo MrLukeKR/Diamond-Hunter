@@ -3,6 +3,9 @@ package application;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import Interfaces.IController;
+import Interfaces.IModel;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,9 +18,11 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class Controller implements Initializable {
+public class Controller implements Initializable, IController {
 	private static Stage view;
 	private static Model model;
+	
+	//FXML Injected Variables
 	
 	@FXML private MenuItem loadTilesetButton;
 	@FXML private MenuItem loadMapButton;
@@ -32,10 +37,26 @@ public class Controller implements Initializable {
 	private FileChooser mapFileChooser = new FileChooser();
 	private FileChooser itemFileChooser = new FileChooser();
 	
+	/**
+	 * Contains the image used to represent an Axe item
+	 */
 	ImageView axeIcon = new ImageView();
+	
+	/**
+	 * Contains the image used to represent a Boat item
+	 */
 	ImageView boatIcon = new ImageView();
 
+	/**
+	 * Allows a model to be passed into the controller, so Model methods can be called directly where necessary
+	 * @param m - The model
+	 */
 	public static void setModel(Model m){ model = m; }
+	
+	/**
+	 * Allows a JavaFX Stage to be passed in to act as a "Parent" window when using File Choosers
+	 * @param newview - The JavaFX Stage
+	 */
 	public static void setView(Stage newview){ view = newview; }
 	
 	@Override
@@ -56,6 +77,10 @@ public class Controller implements Initializable {
 	
 	//FXML Methods
 	
+	/**
+	 * Opens a File Chooser and loads the tiles from the selected file
+	 * @param event - FXML event that fires this method
+	 */
 	@FXML
 	private void handleLoadingTileset(ActionEvent event){	
 		File tileFile = tileFileChooser.showOpenDialog(view);
@@ -65,12 +90,20 @@ public class Controller implements Initializable {
 		}
 	}
 	
+	/**
+	 * Opens a File Chooser and saves the map to the selected file
+	 * @param event - FXML event that fires this method
+	 */
 	@FXML
 	private void saveItemMap(ActionEvent event){
 		File itemFile = itemFileChooser.showSaveDialog(view);
 		if(itemFile != null) model.saveItemMap(itemFile.getAbsolutePath());
 	}
 	
+	/**
+	 * Opens a File Chooser and loads the map from the selected file
+	 * @param event - FXML event that fires this method
+	 */
 	@FXML
 	private void handleLoadingMap(ActionEvent event){
 		File mapFile = mapFileChooser.showOpenDialog(view);
@@ -80,24 +113,39 @@ public class Controller implements Initializable {
 		}
 	}
 	
+	/**
+	 * Sets the models currently held item when the Axe ToggleButton has been pressed
+	 * @param event - FXML event that fires this method
+	 */
 	@FXML private void axeToggled(ActionEvent event){
 		if(axeButton.isSelected()){
-			model.setItem(Model.AXE);
+			model.setItem(IModel.AXE);
 		}else
-			model.setItem(Model.EMPTY);
+			model.setItem(IModel.EMPTY);
 	}
 
+	/**
+	 * Sets the models currently held item when the Boat ToggleButton has been pressed
+	 * @param event - FXML event that fires this method
+	 */
 	@FXML private void boatToggled(ActionEvent event){
 		if(boatButton.isSelected())
-			model.setItem(Model.BOAT);
+			model.setItem(IModel.BOAT);
 		else
-			model.setItem(Model.EMPTY);
+			model.setItem(IModel.EMPTY);
 	}
 	
+	/**
+	 * Exits the application when the close button has been pressed
+	 * @param event - FXML event that fires this method
+	 */
 	@FXML private void exitApplication(ActionEvent event){ System.exit(0); }
 	
 	//Non-FXML Methods
 	
+	/**
+	 * Checks that all of the FXML elements have been injected successfully and if not, throw an exception
+	 */
 	private void confirmSuccessfulLoad(){
 		try {
 			if(loadTilesetButton == null) 	throw new Exception("Load Tileset button was not injected!");
@@ -117,62 +165,79 @@ public class Controller implements Initializable {
 		}
 	}
 	
+	@Override
 	public void updateCoordinates(){
 		coordLabel.setText("X: " + model.getCurrentX() + " Y: " + model.getCurrentY());
 	}
 	
+	@Override
 	public void loadDefaultMap(){
 		model.loadDefaultMap();
 		model.createMapGrid(mapGrid);
 	}
 	
+	/**
+	 * Setup of the Tile File Chooser including Title and File Filter
+	 */
 	private void initTileFileChooser(){
 		tileFileChooser.setTitle("Open Tileset");
 		tileFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("GIF", "*.gif"));
 	}
 	
+	/**
+	 * Setup of the Save Map File Chooser including Title, File Name and File Filter
+	 */
 	private void initSaveMapChooser(){
 		itemFileChooser.setTitle("Save Item Map");
 		itemFileChooser.setInitialFileName("My Item Map");
 		itemFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Item Map", "*.itm"));
 	}
 	
+	/**
+	 * Setup of the Load Map File Chooser including Title and File Filter
+	 */
 	private void initMapFileChooser(){
 		mapFileChooser.setTitle("Open Map");
 		mapFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Map", "*.map"));
 	}
 
+	@Override
 	public void updateIsBlocked(boolean isBlocked) {
 		if (isBlocked)  blockedLabel.setText("Blocked");
 		else 			blockedLabel.setText("Unblocked");
 	}
 	
+	/**
+	 * Places the Axe and Boat Item icons in the relevant ToggleButtons - Ready to be moved to the appropriate X/Y location
+	 */
 	private void initIcons(){
-		axeIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][Model.AXE], null));
-		boatIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][Model.BOAT], null));
+		axeIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][IModel.AXE], null));
+		boatIcon.setImage(SwingFXUtils.toFXImage(Model.ITEMS[1][IModel.BOAT], null));
 		
 		axeButton.setGraphic(axeIcon);
 		boatButton.setGraphic(boatIcon);
 	}
 	
+	@Override
 	public void updateHasItem(int item){
 		switch(item){
-			case Model.EMPTY:blockedLabel.setText(blockedLabel.getText() + " - has no items"); 		break;
-			case Model.AXE:  blockedLabel.setText(blockedLabel.getText() + " - has Axe"); 			break;
-			case Model.BOAT: blockedLabel.setText(blockedLabel.getText() + " - has Boat"); 			break;
-			case Model.BOTH: blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat"); 	break;
+			case IModel.EMPTY:blockedLabel.setText(blockedLabel.getText() + " - has no items"); 		break;
+			case IModel.AXE:  blockedLabel.setText(blockedLabel.getText() + " - has Axe"); 				break;
+			case IModel.BOAT: blockedLabel.setText(blockedLabel.getText() + " - has Boat"); 			break;
+			case IModel.BOTH: blockedLabel.setText(blockedLabel.getText() + " - has Axe and Boat"); 	break;
 		}
 	}
 
+	@Override
 	public void displayItem(int xLoc, int yLoc) {
-		if(model.getCurrentItem() == Model.AXE){
+		if(model.getCurrentItem() == IModel.AXE){
 			axeButton.setGraphic(null);
-			if(model.itemPlaced(Model.AXE))
+			if(model.itemPlaced(IModel.AXE))
 				mapGrid.getChildren().removeAll(axeIcon);
 			mapGrid.add(axeIcon, xLoc, yLoc);
-		} else if(model.getCurrentItem() == Model.BOAT){
+		} else if(model.getCurrentItem() == IModel.BOAT){
 			boatButton.setGraphic(null);
-			if(model.itemPlaced(Model.BOAT))
+			if(model.itemPlaced(IModel.BOAT))
 				mapGrid.getChildren().removeAll(boatIcon);
 			mapGrid.add(boatIcon, xLoc, yLoc);
 		}
