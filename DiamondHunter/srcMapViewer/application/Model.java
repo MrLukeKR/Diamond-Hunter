@@ -66,12 +66,31 @@ public class Model {
 	private Tile[][] tiles;
 	public static BufferedImage[][] ITEMS; 
 	
+	/**
+	 * Represents the coordinates of an item
+	 */
 	private int axeX = EMPTY, axeY = EMPTY, boatX = EMPTY, boatY = EMPTY;
+	/**
+	 * Represents the currently selected item from the "Item Toolbar"
+	 */
 	private int item = EMPTY;
 
+	/**
+	 * Loads items from an item spritesheet into the item buffer
+	 */
 	public void loadItems(){ ITEMS = load("/Sprites/items.gif", 16, 16); }
+	
+	/**
+	 * Gives the Model a reference to a Controller so that it may access functions that update the user interface
+	 * @param mainController - The controller to be passed in
+	 */
 	public void setController(Controller mainController) { controller = mainController; }
 	
+	
+	/**
+	 * Saves the item coordinates in a .itm (Item Map) file to a location chosen by the user
+	 * @param dir - The location (file path) to store the file in
+	 */
 	public void saveItemMap(String dir){
 		try {
 			PrintWriter itemMapFile = new PrintWriter(dir,"UTF-8");
@@ -82,6 +101,14 @@ public class Model {
 		catch (FileNotFoundException | UnsupportedEncodingException e) { e.printStackTrace(); }	
 	}
 	
+	/**
+	 * Creates a new TileButton and returns it
+	 * @param type - Whether or not the Tile is a blocking tile or not
+	 * @param index - The position of the Tile in the Tileset buffer
+	 * @param x - The x coordinate of the tile
+	 * @param y - the y coordinate of the tile
+	 * @return A new fully initialised TileButton
+	 */
 	private TileButton createTileButton(int type, int index, int x, int y){
 		Image icon = SwingFXUtils.toFXImage(tiles[type][index].getImage(), null);
 		TileButton newButton = new TileButton(icon);
@@ -95,17 +122,33 @@ public class Model {
 		return newButton;		
 	}
 	
+	/**
+	 * Creates a new TileButton based only on its Map representation and returns it.
+	 * This is helpful when you may not know if it's blocking or not, as this function calculates its blocking status.
+	 * @param mapValue - The number stored in the .map (Map File) that represents this tile
+	 * @param x - The x coordinate of the Tile
+	 * @param y - The y coordinate of the Tile
+	 * @return A new fully initialised TileButton
+	 */
 	private TileButton createTileButton(int mapValue, int x, int y){
 		if(mapValue >= numTilesAcross)	return createTileButton(1, mapValue - numTilesAcross, x, y);
 		else 							return createTileButton(0, mapValue, x, y);
 	}
 	
+	/**
+	 * Generates the graphical representation of the Map
+	 * @param mapGrid - The GridPane from the UI that displays the map
+	 */
 	public void createMapGrid(GridPane mapGrid){	
 		for(int y = 0; y < numRows; y++)
 			for(int x = 0; x < numCols; x++)
 				mapGrid.add(createTileButton(map[y][x], x, y), x, y);
 	}
 	 
+	/**
+	 * Loads Tile images from an external file
+	 * @param f - Image file that contains Tile icons
+	 */
 	public void loadTiles(File f){
 		try {
 			tileset = ImageIO.read(f);
@@ -115,6 +158,10 @@ public class Model {
 		catch (IOException e) { e.printStackTrace(); }
 	}
 	
+	/**
+	 * Loads Tile images from an internal Resource
+	 * @param s - The Resource's file path
+	 */
 	public void loadTiles(String s) {
 		
 		try {	
@@ -124,6 +171,10 @@ public class Model {
 		catch(Exception e) { e.printStackTrace(); }
 	}
 
+	/**
+	 * Separates a Tileset into individual Tiles
+	 * @param tileset - The BufferedImage representation of the entire TileSet
+	 */
 	public void processTiles(BufferedImage tileset){
 		numTilesAcross = tileset.getWidth() / tileSize;
 		setTiles(new Tile[2][numTilesAcross]);
@@ -147,6 +198,12 @@ public class Model {
 		}
 	}
 
+	/**
+	 * Informs the controller that the currently selected coordinates have changed and updates the UI
+	 * @param x - The currently selected x coordinate
+	 * @param y - The currently selected y coordinate
+	 * @param isBlocked - Whether or not the Tile allows player access
+	 */
 	public void updateCoordinates(int x, int y, boolean isBlocked){
 		currentX = x; currentY = y;
 		controller.updateCoordinates();
@@ -154,21 +211,36 @@ public class Model {
 		controller.updateHasItem(getItemID(x, y));
 	}
 
+	/**
+	 * Loads the original Map when first starting up, to save time loading the files from scratch
+	 */
 	public void loadDefaultMap(){
 		loadTiles("/Tilesets/testtileset.gif");
 		loadMap("/Maps/testmap.map");
 	}
 	
+	/**
+	 * Loads a Map from an external file
+	 * @param f - The file path to the .map (Map) File
+	 */
 	public void loadMap(File f){
 		try { processMap(new FileInputStream(f)); } 
 		catch (FileNotFoundException e) { e.printStackTrace(); }
 	}
 
+	/**
+	 * Loads a Map from an internal Resource
+	 * @param s - The file path to the .map (Map) Resource
+	 */
 	public void loadMap(String s) {
 		try { processMap(getClass().getResourceAsStream(s)); } 
 		catch(Exception e)  { e.printStackTrace(); }
 	}
 
+	/**
+	 * Reads the Map data from the passed in InputStream and stores it in a buffer
+	 * @param in - The InputStream from loadMap(String s) or loadMap(File f)
+	 */
 	public void processMap(InputStream in){
 		try {
 			BufferedReader br = new BufferedReader( new InputStreamReader(in) );
@@ -191,6 +263,13 @@ public class Model {
 		}
 	}
 
+	/**
+	 * Loads the icons required for in-game collectible Items
+	 * @param s - The file path to the icon file
+	 * @param w - The width of the icons
+	 * @param h - The height of the icons
+	 * @return A buffer containing the separate item icons
+	 */
 	public BufferedImage[][] load(String s, int w, int h) {
 		BufferedImage[][] ret;
 		try {
