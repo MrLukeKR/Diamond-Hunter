@@ -15,7 +15,7 @@ public class MapViewer extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Controller.setModel(model);
-			Controller.setStage(primaryStage);
+			Controller.setView(primaryStage);
 			
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root,650,795);
