@@ -165,14 +165,14 @@ public class Controller implements Initializable {
 	}
 
 	public void displayItem(int xLoc, int yLoc) {
-		if(mapEditorModel.getCurrentItem() == 1){
+		if(mapEditorModel.getCurrentItem() == Model.AXE){
 			axeButton.setGraphic(null);
-			if(mapEditorModel.itemPlaced(1))
+			if(mapEditorModel.itemPlaced(Model.AXE))
 				mapGrid.getChildren().removeAll(axeIcon);
 			mapGrid.add(axeIcon, xLoc, yLoc);
-		} else if(mapEditorModel.getCurrentItem() == 0){
+		} else if(mapEditorModel.getCurrentItem() == Model.BOAT){
 			boatButton.setGraphic(null);
-			if(mapEditorModel.itemPlaced(0))
+			if(mapEditorModel.itemPlaced(Model.BOAT))
 				mapGrid.getChildren().removeAll(boatIcon);
 			mapGrid.add(boatIcon, xLoc, yLoc);
 		}
