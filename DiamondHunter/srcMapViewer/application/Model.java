@@ -14,6 +14,9 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import javax.imageio.ImageIO;
 import com.neet.DiamondHunter.TileMap.Tile;
+
+import Interfaces.IController;
+import Interfaces.IModel;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -28,27 +31,7 @@ import javafx.scene.layout.GridPane;
  */
 
 public class Model implements IModel {	
-	/**
-	 * Constant value that represents an EMPTY item
-	 */
-	public static final int EMPTY= - 1;
-	
-	/**
-	 * Constant value that represents an AXE item
-	 */
-	public static final int AXE = 1;
-	
-	/**
-	 * Constant value that represents a BOAT item
-	 */
-	public static final int BOAT = 0;
-	
-	/**
-	 * Constant value that represents a BOAT and an AXE item
-	 */
-	public static final int BOTH = 2;
-	
-	private Controller controller;
+	private IController controller;
 	
 	// map
 	private int[][] map;
@@ -75,22 +58,14 @@ public class Model implements IModel {
 	 */
 	private int item = EMPTY;
 
-	/**
-	 * Loads items from an item spritesheet into the item buffer
-	 */
+	@Override
 	public void loadItems(){ ITEMS = loadItems("/Sprites/items.gif", 16, 16); }
 	
-	/**
-	 * Gives the Model a reference to a Controller so that it may access functions that update the user interface
-	 * @param mainController - The controller to be passed in
-	 */
-	public void setController(Controller mainController) { controller = mainController; }
+	@Override
+	public void setController(IController mainController) { controller = mainController; }
 	
 	
-	/**
-	 * Saves the item coordinates in a .itm (Item Map) file to a location chosen by the user
-	 * @param dir - The location (file path) to store the file in
-	 */
+	@Override
 	public void saveItemMap(String dir){
 		try {
 			PrintWriter itemMapFile = new PrintWriter(dir,"UTF-8");
@@ -135,20 +110,14 @@ public class Model implements IModel {
 		else 							return createTileButton(0, mapValue, x, y);
 	}
 	
-	/**
-	 * Generates the graphical representation of the Map
-	 * @param mapGrid - The GridPane from the UI that displays the map
-	 */
+	@Override
 	public void createMapGrid(GridPane mapGrid){	
 		for(int y = 0; y < numRows; y++)
 			for(int x = 0; x < numCols; x++)
 				mapGrid.add(createTileButton(map[y][x], x, y), x, y);
 	}
 	 
-	/**
-	 * Loads Tile images from an external file
-	 * @param f - Image file that contains Tile icons
-	 */
+	@Override
 	public void loadTiles(File f){
 		try {
 			tileset = ImageIO.read(f);
@@ -158,10 +127,7 @@ public class Model implements IModel {
 		catch (IOException e) { e.printStackTrace(); }
 	}
 	
-	/**
-	 * Loads Tile images from an internal Resource
-	 * @param s - The Resource's file path
-	 */
+	@Override
 	public void loadTiles(String s) {
 		try {	
 			tileset = ImageIO.read(getClass().getResourceAsStream(s));
@@ -170,10 +136,7 @@ public class Model implements IModel {
 		catch(Exception e) { e.printStackTrace(); }
 	}
 
-	/**
-	 * Separates a Tileset into individual Tiles
-	 * @param tileset - The BufferedImage representation of the entire TileSet
-	 */
+	@Override
 	public void processTiles(BufferedImage tileset){
 		numTilesAcross = tileset.getWidth() / tileSize;
 		setTiles(new Tile[2][numTilesAcross]);
@@ -197,12 +160,7 @@ public class Model implements IModel {
 		}
 	}
 
-	/**
-	 * Informs the controller that the currently selected coordinates have changed and updates the UI
-	 * @param x - The currently selected x coordinate
-	 * @param y - The currently selected y coordinate
-	 * @param isBlocked - Whether or not the Tile allows player access
-	 */
+	@Override
 	public void updateCoordinates(int x, int y, boolean isBlocked){
 		currentX = x; currentY = y;
 		controller.updateCoordinates();
@@ -210,36 +168,25 @@ public class Model implements IModel {
 		controller.updateHasItem(getItemID(x, y));
 	}
 
-	/**
-	 * Loads the original Map when first starting up, to save time loading the files from scratch
-	 */
+	@Override
 	public void loadDefaultMap(){
 		loadTiles("/Tilesets/testtileset.gif");
 		loadMap("/Maps/testmap.map");
 	}
 	
-	/**
-	 * Loads a Map from an external file
-	 * @param f - The file path to the .map (Map) File
-	 */
+	@Override
 	public void loadMap(File f){
 		try { processMap(new FileInputStream(f)); } 
 		catch (FileNotFoundException e) { e.printStackTrace(); }
 	}
 
-	/**
-	 * Loads a Map from an internal Resource
-	 * @param s - The file path to the .map (Map) Resource
-	 */
+	@Override
 	public void loadMap(String s) {
 		try { processMap(getClass().getResourceAsStream(s)); } 
 		catch(Exception e)  { e.printStackTrace(); }
 	}
 
-	/**
-	 * Reads the Map data from the passed in InputStream and stores it in a buffer
-	 * @param in - The InputStream from loadMap(String s) or loadMap(File f)
-	 */
+	@Override
 	public void processMap(InputStream in){
 		try {
 			BufferedReader br = new BufferedReader( new InputStreamReader(in) );
@@ -262,13 +209,7 @@ public class Model implements IModel {
 		}
 	}
 
-	/**
-	 * Loads the icons required for in-game collectible Items
-	 * @param s - The file path to the icon file
-	 * @param w - The width of the icons
-	 * @param h - The height of the icons
-	 * @return A buffer containing the separate item icons
-	 */
+	@Override
 	public BufferedImage[][] loadItems(String s, int w, int h) {
 		BufferedImage[][] ret;
 		try {
@@ -290,98 +231,49 @@ public class Model implements IModel {
 		return null;
 	}
 
-	
-	/**
-	 * Sets the number of rows in the map
-	 * @param numRows - Number of rows in the map
-	 */
+	@Override
 	public void setNumRows(int numRows) { this.numRows = numRows; }
 	
-	/**
-	 * Returns the number of rows in the map
-	 * @return The number of rows in the map
-	 */
+	@Override
 	public int getNumRows() 			{ return numRows; }
 
-	/**
-	 * Sets the number of columns in the map
-	 * @param numCols - Number of columns in the map
-	 */
+	@Override
 	public void setNumCols(int numCols) { this.numCols = numCols; }
 	
-	/**
-	 * Returns the number of columns in the map
-	 * @return The number of columns in the map
-	 */
+	@Override
 	public int getNumCols() 			{ return numCols; }
 
-	/**
-	 * Sets which tiles to use in the map
-	 * @param tiles - 2D array of Tiles (Blocked and Unblocked)
-	 */
+	@Override
 	public void setTiles(Tile[][] tiles){ this.tiles = tiles; }
 	
-	/**
-	 * Returns the currently used Tile Set
-	 * @return Currently assigned Tile buffer
-	 */
+	@Override
 	public Tile[][] getTiles() 			{ return tiles; }
 
-	/**
-	 * Sets the map up, where each array element is a Tile index
-	 * @param map - 2D array of integers that represent Tile indexes
-	 */
+	@Override
 	public void setMap(int[][] map)		{ this.map = map; }
 	
-	/**
-	 * Returns the currently assigned map
-	 * @return A 2D array of integers that represent Tile indexes
-	 */
+	@Override
 	public int[][] getMap() 			{ return map; }
 
-	/**
-	 * Sets the currently selected x coordinate
-	 * @param x - Currently selected x coordinate
-	 */
+	@Override
 	public void setCurrentX(int x)		{ currentX = x; }
 	
-	/**
-	 * Gets the currently selected x coordinate
-	 * @return Currently selected x coordinate
-	 */
+	@Override
 	public int getCurrentX() 			{ return currentX; }
 
-	/**
-	 * Sets the currently selected y coordinate
-	 * @param y - Currently selected y coordinate
-	 */
+	@Override
 	public void setCurrentY(int y) 		{ currentY = y; }
 	
-	/**
-	 * Gets the currently selected y coordinate
-	 * @return Currently selected y coordinate
-	 */
+	@Override
 	public int getCurrentY() 			{ return currentY; }
 
-	/**
-	 * Informs the Model of which Item is currently held by the user for placement on the Map
-	 * @param itemID - The item type (Axe, Boat, etc.)
-	 */
+	@Override
 	public void setItem(int itemID) { item = itemID; }
 
-	/**
-	 * Gets the Item currently held by the user for placement on the Map
-	 * @return The item type (Axe, Boat, etc.)
-	 */
+	@Override
 	public int getCurrentItem() { return item; }
 
-	/**
-	 * Sets the location of the currently selected item (from getCurrentItem())
-	 * @param xLoc - The x coordinate of the item
-	 * @param yLoc - The y coordinate of the item
-	 * @param blocked - Whether or not the item blocks user access
-	 * @return True if successful, False if the selected Item doesn't exist or isn't implemented
-	 */
+	@Override
 	public boolean placeItem(int xLoc, int yLoc, boolean blocked) {
 		if(blocked && item != EMPTY){
 			Alert warning = new Alert(AlertType.WARNING);
@@ -391,8 +283,8 @@ public class Model implements IModel {
 			warning.showAndWait();
 		}
 	
-		if		 (item == Model.BOAT){	boatX = xLoc; boatY = yLoc; }
-		else if  (item == Model.AXE) {	axeX = xLoc;  axeY = yLoc;  }
+		if		 (item == IModel.BOAT){	boatX = xLoc; boatY = yLoc; }
+		else if  (item == IModel.AXE) {	axeX = xLoc;  axeY = yLoc;  }
 		else     return false;
 	
 		controller.displayItem(xLoc, yLoc);
@@ -400,11 +292,7 @@ public class Model implements IModel {
 		return true;
 	}
 
-	/**
-	 * Gets whether or not an item exists on the map
-	 * @param i - The Item type (Axe, Boat, etc.)
-	 * @return True if the item is on the map, False if not
-	 */
+	@Override
 	public boolean itemPlaced(int i) {
 		boolean axeExists  = (axeX  != EMPTY && axeY  != EMPTY);
 		boolean boatExists = (boatX != EMPTY && boatY != EMPTY);
@@ -417,12 +305,7 @@ public class Model implements IModel {
 		return true;
 	}
 
-	/**
-	 * Gets the Item at a given X/Y coordinate
-	 * @param xLoc - x coordinate to check for an Item
-	 * @param yLoc - y coordinate to check for an Item
-	 * @return The Item number (Axe, Boat, Both or Empty)
-	 */
+	@Override
 	public int getItemID(int xLoc, int yLoc) {
 		boolean axePlaced  = (xLoc == axeX && yLoc == axeY);
 		boolean boatPlaced = (xLoc == boatX && yLoc == boatY);
