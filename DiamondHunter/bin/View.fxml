@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="805.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+   <children>
+      <BorderPane prefHeight="800.0" prefWidth="650.0">
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem fx:id="loadTilesetButton" mnemonicParsing="false" onAction="#handleLoadingTileset" text="Open Tileset" />
+                        <MenuItem fx:id="loadMapButton" disable="true" mnemonicParsing="false" onAction="#handleLoadingMap" text="Open Map" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="saveMapButton" mnemonicParsing="false" onAction="#saveItemMap" text="Save Item Map" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#exitApplication" text="Close" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+         </top>
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="660.0" minViewportWidth="660.0" minWidth="-Infinity" prefHeight="660.0" prefViewportHeight="660.0" prefViewportWidth="660.0" prefWidth="660.0" BorderPane.alignment="CENTER">
+               <content>
+                  <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="658.0">
+                     <rowConstraints>
+                        <RowConstraints fillHeight="false" valignment="CENTER" vgrow="NEVER" />
+                     </rowConstraints>
+                     <columnConstraints>
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <cursor>
+                        <Cursor fx:constant="CROSSHAIR" />
+                     </cursor>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+         </center>
+         <bottom>
+            <VBox prefHeight="120.0" prefWidth="660.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TitledPane animated="false" collapsible="false" prefHeight="90.0" prefWidth="660.0" text="Items">
+                     <content>
+                        <HBox prefHeight="74.0" prefWidth="658.0" spacing="10.0">
+                           <children>
+                              <ToggleButton fx:id="axeButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#axeToggled" prefHeight="45.0" prefWidth="45.0" text="Axe">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="items" />
+                                 </toggleGroup>
+                              </ToggleButton>
+                              <ToggleButton fx:id="boatButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#boatToggled" prefHeight="45.0" prefWidth="45.0" text="Boat" toggleGroup="$items" />
+                           </children>
+                        </HBox>
+                     </content>
+                  </TitledPane>
+                  <ToolBar prefHeight="18.0" prefWidth="660.0">
+                    <items>
+                        <Label text="Position" />
+                        <Label fx:id="coordLabel" text="X: 0 Y: 0" />
+                        <Separator orientation="VERTICAL" prefHeight="1.0" />
+                        <Label text="Tile Type:" />
+                        <Label fx:id="blockedLabel" text="Blocked/Unblocked" />
+                    </items>
+                  </ToolBar>
+               </children>
+            </VBox>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
