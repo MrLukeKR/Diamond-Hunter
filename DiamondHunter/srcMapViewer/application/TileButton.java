@@ -1,5 +1,8 @@
 package application;
 
+import Interfaces.IModel;
+import Interfaces.ITileButton;
+
 //Imports
 
 import javafx.event.EventHandler;
@@ -17,7 +20,7 @@ import javafx.scene.paint.Color;
  *
  */
 
-public class TileButton extends ImageView{
+public class TileButton extends ImageView implements ITileButton{
 
 	/**
 	 * The ImageView effect used with this TileButton - will show a red border if the TileButton is blocked, black border if not
@@ -32,7 +35,7 @@ public class TileButton extends ImageView{
 	/**
 	 * X / Y location of the current TileButton on the Map
 	 */
-	private int xLoc = Model.EMPTY, yLoc = Model.EMPTY;
+	private int xLoc = IModel.EMPTY, yLoc = IModel.EMPTY;
 	
 	/**
 	 * Flag to show the TileButton disallows Player access (can't walk on the tile)
@@ -48,23 +51,13 @@ public class TileButton extends ImageView{
 		setHandlers();
 	}
 	
-	/**
-	 * Assigns an instantiated Model reference to the TileButton, for interaction between the Model and TileButton
-	 * @param model - Instantiated object of type Model.java
-	 */
+	@Override
 	public void setModel (Model model){ this.model = model; }
 	
-	/**
-	 * Assigns an X / Y position in the Map to the TileButton
-	 * @param x - X Co-ordinate of this TileButton
-	 * @param y - Y Co-ordinate of this TileButton
-	 */
+	@Override
 	public void setCoordinates(int x, int y){ xLoc = x; yLoc = y; }
 	
-	/**
-	 * Set to true if the Tile disallows players walking across it, set to false if it allows players walking across it
-	 * @param blocked - Whether or not the tile blocks players from walking on it
-	 */
+	@Override
 	public void setIsBlocked(boolean blocked){
 		isBlocked = blocked;
 		
@@ -81,7 +74,7 @@ public class TileButton extends ImageView{
 			@Override
 			public void handle(MouseEvent arg0) {
 				setEffect(selected);
-				if(xLoc != Model.EMPTY && yLoc != Model.EMPTY)
+				if(xLoc != IModel.EMPTY && yLoc != IModel.EMPTY)
 					model.updateCoordinates(xLoc, yLoc, isBlocked);
 			}
 		});
