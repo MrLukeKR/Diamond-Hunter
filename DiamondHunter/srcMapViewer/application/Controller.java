@@ -16,8 +16,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class Controller implements Initializable {
-	private static Stage stage;
-	private static Model mapEditorModel;
+	private static Stage view;
+	private static Model model;
 	
 	@FXML private MenuItem loadTilesetButton;
 	@FXML private MenuItem loadMapButton;
@@ -35,12 +35,12 @@ public class Controller implements Initializable {
 	ImageView axeIcon = new ImageView();
 	ImageView boatIcon = new ImageView();
 
-	public static void setModel(Model model){ mapEditorModel = model; }
-	public static void setStage(Stage newStage){ stage = newStage; }
+	public static void setModel(Model m){ model = m; }
+	public static void setView(Stage newview){ view = newview; }
 	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		mapEditorModel.setController(this);
+		model.setController(this);
 		
 		confirmSuccessfulLoad();
 
@@ -49,7 +49,7 @@ public class Controller implements Initializable {
 		initMapFileChooser();
 
 		loadDefaultMap();
-		mapEditorModel.loadItems();
+		model.loadItems();
 		
 		initIcons();
 	}
@@ -58,40 +58,40 @@ public class Controller implements Initializable {
 	
 	@FXML
 	private void handleLoadingTileset(ActionEvent event){	
-		File tileFile = tileFileChooser.showOpenDialog(stage);
+		File tileFile = tileFileChooser.showOpenDialog(view);
 		if(tileFile != null){
-			mapEditorModel.loadTiles(tileFile);
+			model.loadTiles(tileFile);
 			loadMapButton.setDisable(false);
 		}
 	}
 	
 	@FXML
 	private void saveItemMap(ActionEvent event){
-		File itemFile = itemFileChooser.showSaveDialog(stage);
-		if(itemFile != null) mapEditorModel.saveItemMap(itemFile.getAbsolutePath());
+		File itemFile = itemFileChooser.showSaveDialog(view);
+		if(itemFile != null) model.saveItemMap(itemFile.getAbsolutePath());
 	}
 	
 	@FXML
 	private void handleLoadingMap(ActionEvent event){
-		File mapFile = mapFileChooser.showOpenDialog(stage);
+		File mapFile = mapFileChooser.showOpenDialog(view);
 		if(mapFile != null){
-			mapEditorModel.loadMap(mapFile);	
-			mapEditorModel.createMapGrid(mapGrid);
+			model.loadMap(mapFile);	
+			model.createMapGrid(mapGrid);
 		}
 	}
 	
 	@FXML private void axeToggled(ActionEvent event){
 		if(axeButton.isSelected()){
-			mapEditorModel.setItem(Model.AXE);
+			model.setItem(Model.AXE);
 		}else
-			mapEditorModel.setItem(Model.EMPTY);
+			model.setItem(Model.EMPTY);
 	}
 
 	@FXML private void boatToggled(ActionEvent event){
 		if(boatButton.isSelected())
-			mapEditorModel.setItem(Model.BOAT);
+			model.setItem(Model.BOAT);
 		else
-			mapEditorModel.setItem(Model.EMPTY);
+			model.setItem(Model.EMPTY);
 	}
 	
 	@FXML private void exitApplication(ActionEvent event){ System.exit(0); }
@@ -118,12 +118,12 @@ public class Controller implements Initializable {
 	}
 	
 	public void updateCoordinates(){
-		coordLabel.setText("X: " + mapEditorModel.getCurrentX() + " Y: " + mapEditorModel.getCurrentY());
+		coordLabel.setText("X: " + model.getCurrentX() + " Y: " + model.getCurrentY());
 	}
 	
 	public void loadDefaultMap(){
-		mapEditorModel.loadDefaultMap();
-		mapEditorModel.createMapGrid(mapGrid);
+		model.loadDefaultMap();
+		model.createMapGrid(mapGrid);
 	}
 	
 	private void initTileFileChooser(){
@@ -165,14 +165,14 @@ public class Controller implements Initializable {
 	}
 
 	public void displayItem(int xLoc, int yLoc) {
-		if(mapEditorModel.getCurrentItem() == Model.AXE){
+		if(model.getCurrentItem() == Model.AXE){
 			axeButton.setGraphic(null);
-			if(mapEditorModel.itemPlaced(Model.AXE))
+			if(model.itemPlaced(Model.AXE))
 				mapGrid.getChildren().removeAll(axeIcon);
 			mapGrid.add(axeIcon, xLoc, yLoc);
-		} else if(mapEditorModel.getCurrentItem() == Model.BOAT){
+		} else if(model.getCurrentItem() == Model.BOAT){
 			boatButton.setGraphic(null);
-			if(mapEditorModel.itemPlaced(Model.BOAT))
+			if(model.itemPlaced(Model.BOAT))
 				mapGrid.getChildren().removeAll(boatIcon);
 			mapGrid.add(boatIcon, xLoc, yLoc);
 		}
