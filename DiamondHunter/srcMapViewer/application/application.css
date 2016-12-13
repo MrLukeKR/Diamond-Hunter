@@ -1,1 +1,67 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.toggle-button{
+	-fx-background-color: #666666;
+	-fx-text-fill: #FFFFFF;	
+	-fx-background-radius: 40;
+}
+
+.toggle-button:selected{
+	-fx-background-color: #999999;
+}
+
+.menu:hover,
+.menu-button:hover,
+.menu-item:hover{
+	-fx-background-color: #666666;
+}
+
+.menu-item,
+.menu-button,
+.context-menu{
+	-fx-background-color: #333333;
+}
+
+.menu,
+.menu-bar{
+	-fx-background-color: 
+		linear-gradient(#666666 0%, #333333 100%);
+}
+
+.tool-bar .label,
+.menu .label{
+	-fx-text-fill:#FFFFFF;
+}
+
+.menu .separator,
+.tool-bar .separator{
+		-fx-background-color: #444444;
+}
+
+.titled-pane .content{
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+}
+
+.titled-pane{
+	-fx-text-fill: #FFFFFF;
+	-fx-background-color:#333333;
+}
+
+.titled-pane > .title{
+	-fx-background-color: #555555;
+	-fx-background-radius: 3;
+}
+
+.tool-bar{
+	-fx-background-color: 
+		linear-gradient(#333333 0%, #666666 100%);
+}
+
+.vbox,
+.hbox,
+.border-pane,
+.scroll-pane,
+.anchor-pane,
+.grid-pane,
+.background{
+	-fx-background-color: #333333;
+}
