@@ -35,17 +35,3 @@ To load the items in, run the _new_ version of Diamond Hunter in the repository.
 This new version will have a new menu entry "Load Items". Using the directional arrows, navigate down to it and hit enter. From here you can select the file you made from a dialog box - just navigate to where you saved it and click open.
 
 The game is now ready to play!
-
-## Screenshots
-### The Map Viewer
-![MapViewer](/uploads/f1f2df16a66644a9109bcc37361f3458/MapViewer.jpg)
-### Placing Items
-![ItemPlacement](/uploads/4b93b7a1864887466096f039da9704f5/ItemPlacement.jpg)
-### Saving To An Item Map File
-![SavingItems](/uploads/27edd42e6a0f2fa1ec859e225e2cfcf2/SavingItems.jpg)
-### New Menu Item In Diamond Hunter
-![DiamondHunterV2](/uploads/93bace6d0907e5219ae777302c33ca88/DiamondHunterV2.jpg)
-### Selecting The Item Map File
-![LoadingItems](/uploads/b7533f1221a5fcca79d671bbd34fde24/LoadingItems.jpg)
-### Playing The Game With The New Items
-![ItemsPlaced](/uploads/0a14e7c7a42a3070efc791ac8fdcdb0b/ItemsPlaced.jpg)
